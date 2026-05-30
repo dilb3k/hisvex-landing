@@ -2,6 +2,8 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import App from './App.tsx'
+import PrivacyPage from './PrivacyPage.tsx'
+import TermsPage from './TermsPage.tsx'
 import './style.css'
 
 createRoot(document.getElementById('app')!).render(
@@ -13,9 +15,9 @@ createRoot(document.getElementById('app')!).render(
         <Route path="/imkoniyatlar" element={<App />} />
         <Route path="/ekranlar" element={<App />} />
         <Route path="/narxlar" element={<App />} />
-        <Route path="/privacy" element={<App />} />
+        <Route path="/privacy" element={<PrivacyPage />} />
         <Route path="/faq" element={<App />} />
-        <Route path="/terms" element={<App />} />
+        <Route path="/terms" element={<TermsPage />} />
         <Route path="*" element={<App />} />
       </Routes>
     </BrowserRouter>
