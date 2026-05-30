@@ -311,6 +311,14 @@ footer{border-top:1px solid var(--line);padding:64px 0 36px;margin-top:90px}
 
 /* ===== Privacy & Terms pages ===== */
 .bg{position:fixed;inset:0;z-index:-1;overflow:hidden;pointer-events:none}
+header{position:sticky;top:0;z-index:10;backdrop-filter:blur(16px);background:rgba(10,8,19,.7);border-bottom:1px solid var(--line)}
+header .nav{max-width:860px;margin:0 auto;padding:18px 24px;display:flex;align-items:center;justify-content:space-between}
+header .brand{display:flex;align-items:center;gap:10px;font-family:var(--serif);font-size:21px;font-weight:700}
+header .brand b{color:var(--gold)}
+header .logo{width:32px;height:32px;border-radius:9px;display:grid;place-items:center;background:linear-gradient(135deg,var(--violet),#6D28D9)}
+header .logo svg{width:18px;height:18px}
+header .back{font-family:var(--sans);font-size:14px;font-weight:600;color:var(--muted)}
+header .back:hover{color:var(--text)}
 .bg span{position:absolute;width:50vw;height:50vw;border-radius:50%;filter:blur(110px);opacity:.25}
 .bg span:nth-child(1){background:#7C3AED;right:-15vw;top:-15vw}
 .bg span:nth-child(2){background:#34D399;left:-18vw;bottom:-12vw;opacity:.12}
