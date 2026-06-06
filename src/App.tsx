@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 
 const I = {
@@ -90,6 +90,7 @@ function AppPhone({ idx: pi }: { idx: number }) {
 
 function App() {
   const { pathname } = useLocation()
+  const [dur, setDur] = useState(1)
   useEffect(() => {
     const nav = document.getElementById('nav')
     const scrollHandler = () => nav?.classList.toggle('scrolled', scrollY > 20)
@@ -289,7 +290,16 @@ function App() {
       <section className="sec" id="narxlar">
         <div className="wrap">
           <div className="sec-head reveal" style={{ textAlign: 'center', margin: '0 auto 54px' as any }}><span className="eyebrow"><span className="dot"></span>Tariflar</span><h2 className="section-title">Biznesingizga mos <span className="grad-text">tarif</span></h2><p className="lead" style={{ margin: '14px auto 0' }}>Kichik do'kondan kattagacha — har bir bosqich uchun.</p></div>
-          <div className="prices">
+          <div className="dur-toggle reveal" style={{ justifyContent: 'center' }}>
+            {[1, 6, 12].map(m => (
+              <button key={m} className={'dur-btn' + (dur === m ? ' on' : '')} onClick={() => setDur(m)}>
+                {m === 1 ? '1 oy' : m === 6 ? '6 oy' : '12 oy'}
+                {m === 6 && <span className="dur-disc">−6%</span>}
+                {m === 12 && <span className="dur-disc">−12%</span>}
+              </button>
+            ))}
+          </div>
+          <div className="prices" style={{ marginTop: 28 }}>
             <div className="price reveal d1">
               <div className="pname">Tekin</div><div className="pdesc">Boshlab ko'rish va kichik nuqtalar uchun.</div><div className="pcost">0 <small>so'm</small></div>
               <ul>
@@ -301,9 +311,11 @@ function App() {
               <a href="https://t.me/dilbek7011" target="_blank" className="btn btn-ghost">Boshlash</a>
             </div>
             <div className="price reveal d2">
-              <div className="pname">Bor</div><div className="pdesc">O'sib borayotgan do'konlar uchun.</div><div className="pcost">44 000 <small>so'm/oy</small></div>
+              <div className="pname">Bor</div><div className="pdesc">O'sib borayotgan do'konlar uchun.</div>
+              <div className="pcost">{dur === 1 ? '44 000' : dur === 6 ? '248 160' : '464 640'} <small>so'm{dur > 1 ? '' : '/oy'}</small></div>
+              {dur > 1 && <div className="dur-save">≈ {(dur === 6 ? 41360 : 38720).toLocaleString('uz-UZ')} so'm/oy</div>}
               <ul>
-                <li><svg viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" /></svg>100 ta mahsulotgacha</li>
+                <li><svg viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" /></svg>{dur === 1 ? '100 ta mahsulotgacha' : '100 ta mahsulotgacha'}</li>
                 <li><svg viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" /></svg>Savdo va qarzdorlar</li>
                 <li><svg viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" /></svg>Offline sync</li>
                 <li className="off"><svg viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" /></svg>Cheksiz miqyos</li>
@@ -311,7 +323,9 @@ function App() {
               <a href="https://t.me/dilbek7011" target="_blank" className="btn btn-ghost">Tanlash</a>
             </div>
             <div className="price feat reveal d3">
-              <span className="tag">Ommabop</span><div className="pname">Pro</div><div className="pdesc">To'liq imkoniyatlar, cheksiz miqyos.</div><div className="pcost">99 000 <small>so'm/oy</small></div>
+              <span className="tag">Ommabop</span><div className="pname">Pro</div><div className="pdesc">To'liq imkoniyatlar, cheksiz miqyos.</div>
+              <div className="pcost">{dur === 1 ? '99 000' : dur === 6 ? '558 360' : '1 045 440'} <small>so'm{dur > 1 ? '' : '/oy'}</small></div>
+              {dur > 1 && <div className="dur-save">≈ {(dur === 6 ? 93060 : 87120).toLocaleString('uz-UZ')} so'm/oy</div>}
               <ul>
                 <li><svg viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" /></svg><b>Cheksiz</b> mahsulot</li>
                 <li><svg viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" /></svg>To'liq Statistika &amp; Reyting</li>

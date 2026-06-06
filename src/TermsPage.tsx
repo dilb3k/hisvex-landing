@@ -4,6 +4,25 @@ import { Link } from 'react-router-dom'
 function TermsPage() {
   useEffect(() => {
     document.getElementById('y')!.textContent = String(new Date().getFullYear())
+
+    const nav = document.getElementById('nav')
+    const scrollHandler = () => nav?.classList.toggle('scrolled', scrollY > 20)
+    addEventListener('scroll', scrollHandler)
+
+    const burger = document.getElementById('burger')
+    burger?.addEventListener('click', () => {
+      const l = document.querySelector<HTMLElement>('.nav-links')
+      if (l) l.style.cssText = 'display:flex;position:absolute;top:70px;left:16px;right:16px;flex-direction:column;background:rgba(14,11,26,.97);border:1px solid var(--line);border-radius:20px;padding:20px;gap:16px;backdrop-filter:blur(16px)'
+    })
+    document.querySelectorAll('.nav-links a').forEach(a =>
+      a.addEventListener('click', () => {
+        if (innerWidth <= 980) {
+          const l = document.querySelector<HTMLElement>('.nav-links')
+          if (l) l.style.display = 'none'
+        }
+      })
+    )
+
     const handleClick = (e: MouseEvent) => {
       const a = (e.target as HTMLElement).closest<HTMLAnchorElement>('a[href^="#"]')
       if (a) {
@@ -25,22 +44,38 @@ function TermsPage() {
       }
     }
     document.addEventListener('click', handleClick)
-    return () => document.removeEventListener('click', handleClick)
+    return () => {
+      removeEventListener('scroll', scrollHandler)
+      document.removeEventListener('click', handleClick)
+    }
   }, [])
 
   return (
     <div className="terms">
       <div className="bg"><span></span><span></span></div>
+      <div className="grain"></div>
 
-      <header>
-        <div className="nav">
-          <Link to="/" className="brand"><span className="logo"><svg viewBox="0 0 24 24" fill="none"><path d="M4 18V8m5 10V5m5 13v-7m5 7V9" stroke="#fff" strokeWidth="2.4" strokeLinecap="round" /></svg></span>His<b>vex</b></Link>
-          <Link to="/" className="back">← Bosh sahifa</Link>
+      <header className="nav" id="nav">
+        <div className="nav-inner">
+          <a href="/top" className="brand" style={{ gap: 8 }}>
+            <span style={{ display: 'flex', alignItems: 'center', height: 55, overflow: 'hidden' }}>
+              <img src="/Hisvex.png" alt="Hisvex" style={{ height: 110, width: 'auto', display: 'block', objectFit: 'cover', objectPosition: 'center' }} />
+            </span>
+            <span><span style={{ color: '#8B5CF6', fontSize: 28, fontWeight: 700 }}>His</span><span style={{ color: '#FFF', fontSize: 28, fontWeight: 700 }}>vex</span></span>
+          </a>
+          <nav className="nav-links">
+            <a href="/imkoniyatlar">Imkoniyatlar</a><a href="/ekranlar">Ekranlar</a><a href="/narxlar">Narxlar</a><a href="/privacy">Privacy</a><a href="/faq">Savollar</a>
+          </nav>
+          <div className="nav-cta">
+            <a href="/privacy" className="btn btn-ghost">Privacy</a>
+            <a href="https://t.me/dilbek7011" target="_blank" className="btn btn-gold">Boshlash <span className="arr">→</span></a>
+          </div>
+          <div className="burger" id="burger"><span></span><span></span><span></span></div>
         </div>
       </header>
 
-      <section className="hero">
-        <div className="wrap">
+      <section className="hero" style={{ paddingTop: 140 }}>
+        <div className="legal-wrap">
           <span className="eyebrow">Huquqiy</span>
           <h1>Foydalanish shartlari</h1>
           <p className="upd">Oxirgi yangilanish: 2026-yil 30-may</p>
@@ -48,7 +83,7 @@ function TermsPage() {
       </section>
 
       <section className="content">
-        <div className="wrap">
+        <div className="legal-wrap">
           <div className="toc">
             <h4>Mundarija</h4>
             <a href="#s1">1. Umumiy qoidalar</a>
