@@ -310,9 +310,85 @@ footer{border-top:1px solid var(--line);padding:64px 0 36px;margin-top:90px}
   .phone.tilt{transform:none}
 }
 @media(max-width:560px){
+  .wrap{padding:0 18px}
   .bento{grid-template-columns:1fr}.f-card.span3,.f-card.span2{grid-column:span 1}
   .steps{grid-template-columns:1fr}.foot-grid{grid-template-columns:1fr}
-  .hero-stats{gap:24px}.nav-cta .btn-ghost{display:none}
+  .hero-stats{gap:16px}.nav-cta .btn-ghost{display:none}
+  .nav-inner{margin:8px 12px;padding:8px 14px}
+  .brand{font-size:15px;gap:6px}
+  .brand>span:first-child{height:38px!important;overflow:hidden}
+  .brand img{height:76px!important}
+  .brand>span:last-child span{font-size:18px!important}
+  .nav-cta .btn{padding:8px 13px;font-size:12px;gap:5px}
+  .burger{padding:6px}.burger span{width:20px}
+  .hero{padding:105px 0 44px}
+  .hero h1{margin:14px 0 12px}
+  .hero .lead{margin-bottom:20px}
+  .hero-cta{gap:10px;margin-bottom:20px}
+  .hstat .n{font-size:24px}
+  .sec{padding:50px 0}
+  .sec-head{margin-bottom:28px}
+  .sec-head h2{margin:12px 0 10px}
+  .btn{padding:11px 18px;font-size:13px}
+  .prices{gap:14px}
+  .price{padding:22px 18px}
+  .price .pname{font-size:21px}
+  .price .pcost{font-size:30px}
+  .price .pdesc{min-height:auto;margin:5px 0 14px}
+  .price ul{margin:16px 0;gap:9px}
+  .price li{font-size:13px}
+  .pcost small{font-size:13px}
+  .dur-toggle{gap:8px;flex-wrap:wrap;justify-content:center}
+  .dur-btn{padding:7px 14px;font-size:12px;gap:5px}
+  .dur-disc{font-size:9px;padding:1px 5px}
+  .dur-save{font-size:11px;margin:-8px 0 14px}
+  .f-card{padding:20px}
+  .f-card.feature-big{min-height:auto}
+  .f-ic{width:40px;height:40px;margin-bottom:14px}
+  .f-ic svg{width:20px;height:20px}
+  .f-card h3{font-size:17px}
+  .f-card p{font-size:13px}
+  .big-metric{margin-top:14px}
+  .step{padding:22px 18px}
+  .step .num{font-size:32px;margin-bottom:12px}
+  .step h4{font-size:15px}
+  .step p{font-size:13px}
+  .showcase{gap:24px}
+  .show-list{gap:12px}
+  .show-item{padding:10px 0;gap:10px}
+  .show-item h4{font-size:15px}
+  .show-item p{font-size:13px}
+  .sec-shield{padding:24px 20px;gap:24px;border-radius:22px}
+  .shield-item{gap:11px}
+  .shield-item .ic{width:36px;height:36px}
+  .shield-item .ic svg{width:16px;height:16px}
+  .shield-item h4{font-size:14px}
+  .shield-item p{font-size:12.5px}
+  .shield-visual{min-height:120px}
+  .shield-ring{width:120px;height:120px}
+  .shield-ring::before{inset:-18px}
+  .shield-ring::after{inset:-36px}
+  .shield-core{width:64px;height:64px;border-radius:20px}
+  .shield-core svg{width:32px;height:32px}
+  .q-head{padding:14px 4px}
+  .q-body p{font-size:14px}
+  .cta-wrap{padding:clamp(32px,5vw,44px) 18px;border-radius:24px}
+  .cta-glow{width:300px;height:300px}
+  .hero-visual{min-height:auto}
+  .phone{width:250px;border-radius:34px;padding:9px}
+  .phone .screen{border-radius:26px;height:500px}
+  .phone .notch{width:90px;height:22px}
+  .hero-badge{padding:8px 10px;font-size:11px}
+  .hero-badge .ic{width:24px;height:24px;border-radius:7px}
+  .hero-badge small{font-size:9px}
+  .hb1{left:4px;top:20px}
+  .hb2{right:6px;bottom:70px}
+  .marquee{padding:14px 0;margin-top:36px}
+  .marquee-track{gap:30px}
+  .marquee span{font-size:15px;gap:30px}
+  footer{padding:36px 0 20px;margin-top:40px}
+  .foot-grid{gap:20px}
+  .foot-col h5{margin-bottom:12px}
 }
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.reveal{opacity:1;transform:none}}
 
