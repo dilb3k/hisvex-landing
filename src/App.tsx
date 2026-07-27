@@ -91,24 +91,31 @@ function AppPhone({ idx: pi }: { idx: number }) {
 function App() {
   const { pathname } = useLocation()
   const [dur, setDur] = useState(1)
+  const cleanupRefs = useRef<Array<() => void>>([])
+
   useEffect(() => {
+    cleanupRefs.current.forEach(fn => fn())
+    cleanupRefs.current = []
+
     const nav = document.getElementById('nav')
     const scrollHandler = () => nav?.classList.toggle('scrolled', scrollY > 20)
-    addEventListener('scroll', scrollHandler)
+    window.addEventListener('scroll', scrollHandler, { passive: true })
 
     const burger = document.getElementById('burger')
-    burger?.addEventListener('click', () => {
-      const l = document.querySelector<HTMLElement>('.nav-links')
-      if (l) l.style.cssText = 'display:flex;position:absolute;top:70px;left:16px;right:16px;flex-direction:column;background:rgba(14,11,26,.97);border:1px solid var(--line);border-radius:20px;padding:20px;gap:16px;backdrop-filter:blur(16px)'
-    })
-    document.querySelectorAll('.nav-links a').forEach(a =>
-      a.addEventListener('click', () => {
-        if (innerWidth <= 980) {
-          const l = document.querySelector<HTMLElement>('.nav-links')
-          if (l) l.style.display = 'none'
-        }
-      })
-    )
+    const burgerMenu = document.getElementById('burger-menu')
+    const burgerHandler = () => {
+      if (burgerMenu) {
+        const isOpen = burgerMenu.style.display === 'flex'
+        burgerMenu.style.display = isOpen ? 'none' : 'flex'
+      }
+    }
+    burger?.addEventListener('click', burgerHandler)
+
+    const linkCloseHandler = () => {
+      if (burgerMenu) burgerMenu.style.display = 'none'
+    }
+    const navLinks = document.querySelectorAll<HTMLElement>('.nav-links a, #burger-menu a')
+    navLinks.forEach(a => a.addEventListener('click', linkCloseHandler))
 
     const io = new IntersectionObserver(
       es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target) } }),
@@ -120,7 +127,7 @@ function App() {
       es => es.forEach(e => {
         if (e.isIntersecting) {
           const el = e.target as HTMLElement
-          const end = +el.dataset.count!
+          const end = +(el.dataset.count ?? '0')
           const suf = el.dataset.suffix || ''
           const st = performance.now()
           const tick = (n: number) => {
@@ -136,17 +143,24 @@ function App() {
     )
     document.querySelectorAll('[data-count]').forEach(el => cio.observe(el))
 
-    document.querySelectorAll('.q-head').forEach(h =>
-      h.addEventListener('click', () => (h.parentElement as HTMLElement)?.classList.toggle('open'))
-    )
-    document.querySelectorAll('.f-card').forEach(c =>
-      c.addEventListener('mousemove', (e: Event) => {
+    const qHandlers: Array<{ el: Element; fn: () => void }> = []
+    document.querySelectorAll('.q-head').forEach(h => {
+      const fn = () => (h.parentElement as HTMLElement)?.classList.toggle('open')
+      h.addEventListener('click', fn)
+      qHandlers.push({ el: h, fn })
+    })
+
+    const fCardCleanups: Array<() => void> = []
+    document.querySelectorAll('.f-card').forEach(c => {
+      const handler = (e: Event) => {
         const me = e as MouseEvent
         const r = c.getBoundingClientRect()
         ;(c as HTMLElement).style.setProperty('--mx', (me.clientX - r.left) + 'px')
         ;(c as HTMLElement).style.setProperty('--my', (me.clientY - r.top) + 'px')
-      })
-    )
+      }
+      c.addEventListener('mousemove', handler)
+      fCardCleanups.push(() => c.removeEventListener('mousemove', handler))
+    })
 
     document.getElementById('year')!.textContent = String(new Date().getFullYear())
 
@@ -170,9 +184,13 @@ function App() {
     }
 
     return () => {
-      removeEventListener('scroll', scrollHandler)
+      window.removeEventListener('scroll', scrollHandler)
+      burger?.removeEventListener('click', burgerHandler)
+      navLinks.forEach(a => a.removeEventListener('click', linkCloseHandler))
       io.disconnect()
       cio.disconnect()
+      qHandlers.forEach(({ el, fn }) => el.removeEventListener('click', fn))
+      fCardCleanups.forEach(fn => fn())
     }
   }, [pathname])
 
@@ -197,6 +215,14 @@ function App() {
             <a href="https://t.me/dilbek7011" target="_blank" className="btn btn-gold">Boshlash <span className="arr">→</span></a>
           </div>
           <div className="burger" id="burger"><span></span><span></span><span></span></div>
+        </div>
+        <div className="burger-menu" id="burger-menu">
+          <a href="/imkoniyatlar">Imkoniyatlar</a>
+          <a href="/ekranlar">Ekranlar</a>
+          <a href="/narxlar">Narxlar</a>
+          <a href="/privacy">Privacy</a>
+          <a href="/faq">Savollar</a>
+          <a href="https://t.me/dilbek7011" target="_blank" className="btn btn-gold" style={{ justifyContent: 'center', marginTop: 4 }}>Boshlash <span className="arr">→</span></a>
         </div>
       </header>
 
@@ -229,6 +255,52 @@ function App() {
           <span>Mahsulotlar</span><span>Kunlik ombor</span><span>Tezkor savdo</span><span>Qarzdorlar</span><span>Statistika &amp; Reyting</span><span>Offline sync</span><span>Blok kod himoyasi</span>
           <span>Mahsulotlar</span><span>Kunlik ombor</span><span>Tezkor savdo</span><span>Qarzdorlar</span><span>Statistika &amp; Reyting</span><span>Offline sync</span><span>Blok kod himoyasi</span>
         </div></div>
+      </section>
+
+      <section className="sec" style={{ paddingTop: 20, paddingBottom: 40 }}>
+        <div className="wrap">
+          <div className="download-row reveal">
+            <div className="dl-card">
+              <div className="dl-icon android">
+                <svg viewBox="0 0 24 24" fill="currentColor" style={{ width: 28, height: 28 }}><path d="M17.6 9.48l1.84-3.18c.16-.31.04-.69-.27-.85-.31-.16-.69-.04-.85.27l-1.87 3.23c-1.15-.48-2.44-.75-3.8-.75s-2.65.27-3.8.75L6.98 5.72c-.16-.31-.54-.43-.85-.27-.31.16-.43.55-.27.85L7.7 9.48C4.48 11.24 2.28 14.38 2 18h20c-.28-3.62-2.48-6.76-5.7-8.52zM7 15.25a1.25 1.25 0 110-2.5 1.25 1.25 0 010 2.5zm10 0a1.25 1.25 0 110-2.5 1.25 1.25 0 010 2.5z"/></svg>
+              </div>
+              <div className="dl-info">
+                <h4>Android</h4>
+                <p>Google Play orqali yuklab oling</p>
+              </div>
+              <a href="https://t.me/dilbek7011" target="_blank" rel="noopener noreferrer" className="btn btn-gold dl-btn">
+                <svg viewBox="0 0 24 24" fill="none" style={{ width: 16, height: 16 }}><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                Yuklab olish <span className="arr">→</span>
+              </a>
+            </div>
+            <div className="dl-card">
+              <div className="dl-icon desktop">
+                <svg viewBox="0 0 24 24" fill="none" style={{ width: 28, height: 28 }}><rect x="2" y="3" width="20" height="14" rx="2" stroke="currentColor" strokeWidth="2"/><path d="M8 21h8M12 17v4" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg>
+              </div>
+              <div className="dl-info">
+                <h4>Desktop</h4>
+                <p>Windows, macOS, Linux</p>
+              </div>
+              <a href="#desktop" className="btn btn-ghost dl-btn">
+                <svg viewBox="0 0 24 24" fill="none" style={{ width: 16, height: 16 }}><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                Yuklab olish
+              </a>
+            </div>
+            <div className="dl-card">
+              <div className="dl-icon web">
+                <svg viewBox="0 0 24 24" fill="none" style={{ width: 28, height: 28 }}><circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2"/><path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z" stroke="currentColor" strokeWidth="2"/></svg>
+              </div>
+              <div className="dl-info">
+                <h4>Web versiya</h4>
+                <p>Brauzer orqali ishlating</p>
+              </div>
+              <a href="https://t.me/dilbek7011" target="_blank" rel="noopener noreferrer" className="btn btn-ghost dl-btn">
+                <svg viewBox="0 0 24 24" fill="none" style={{ width: 16, height: 16 }}><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                Ochish
+              </a>
+            </div>
+          </div>
+        </div>
       </section>
 
       <section className="sec" id="imkoniyatlar">
@@ -283,6 +355,302 @@ function App() {
             <div className="step reveal d2"><div className="num"></div><h4>Mahsulot qo'shing</h4><p>Nomi, narxi va qoldig'ini kiriting — yoki barcode skaner qiling.</p></div>
             <div className="step reveal d3"><div className="num"></div><h4>Soting</h4><p>Har bir savdoni bir tegishda qayd eting. Qoldiq avtomatik kamayadi.</p></div>
             <div className="step reveal d4"><div className="num"></div><h4>Hisobotni ko'ring</h4><p>Tushum, foyda va reytingni real vaqtda kuzating.</p></div>
+          </div>
+        </div>
+      </section>
+
+      <section className="sec" id="desktop">
+        <div className="wrap">
+          <div className="sec-head reveal" style={{ textAlign: 'center', margin: '0 auto 54px' as any }}>
+            <span className="eyebrow"><span className="dot"></span>Desktop versiya</span>
+            <h2 className="section-title">Hisvexni <span className="grad-text">kompyuteringizda</span> ishlating</h2>
+            <p className="lead" style={{ margin: '14px auto 0' }}>Katta ekranda yanada qulayroq boshqaring. Windows, macOS va Linux uchun maxsus ilova.</p>
+          </div>
+
+          <div className="desktop-showcase reveal">
+            <div className="desktop-glow"></div>
+            <div className="desktop-monitor">
+              <div className="monitor-bezel">
+                <div className="monitor-camera"><div className="cam-dot"></div></div>
+                <div className="monitor-controls">
+                  <span></span><span></span><span></span>
+                </div>
+              </div>
+              <div className="monitor-screen">
+                <div className="desktop-app">
+                  <div className="desktop-sidebar">
+                    <div className="sidebar-brand">
+                      <div className="sidebar-logo">H</div>
+                      <span><span style={{ color: 'var(--violet)', fontWeight: 700 }}>His</span><span style={{ color: '#fff', fontWeight: 700 }}>vex</span></span>
+                    </div>
+                    <div className="sidebar-section">Asosiy</div>
+                    <div className="sidebar-nav">
+                      <div className="sidebar-item active">
+                        <svg viewBox="0 0 24 24" fill="none"><path d="M3 9l9-7 9 7v11a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z" stroke="currentColor" strokeWidth="2" strokeLinejoin="round"/></svg>
+                        Bosh sahifa
+                        <span className="sidebar-badge">12</span>
+                      </div>
+                      <div className="sidebar-item">
+                        <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="7" height="7" rx="1.5" stroke="currentColor" strokeWidth="2"/><rect x="14" y="3" width="7" height="7" rx="1.5" stroke="currentColor" strokeWidth="2"/><rect x="3" y="14" width="7" height="7" rx="1.5" stroke="currentColor" strokeWidth="2"/><rect x="14" y="14" width="7" height="7" rx="1.5" stroke="currentColor" strokeWidth="2"/></svg>
+                        Mahsulotlar
+                      </div>
+                      <div className="sidebar-item">
+                        <svg viewBox="0 0 24 24" fill="none"><rect x="4" y="3" width="16" height="18" rx="2" stroke="currentColor" strokeWidth="2"/><path d="M8 8h8M8 12h8M8 16h5" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg>
+                        Ombor
+                      </div>
+                      <div className="sidebar-item">
+                        <svg viewBox="0 0 24 24" fill="none"><circle cx="9" cy="20" r="1.6" fill="currentColor"/><circle cx="18" cy="20" r="1.6" fill="currentColor"/><path d="M2 3h3l2.5 13h11" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                        Savdo
+                        <span className="sidebar-dot"></span>
+                      </div>
+                    </div>
+                    <div className="sidebar-section">Tahlil</div>
+                    <div className="sidebar-nav">
+                      <div className="sidebar-item">
+                        <svg viewBox="0 0 24 24" fill="none"><path d="M4 20V10M10 20V4m6 16v-7m6 7v-3" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg>
+                        Statistika
+                      </div>
+                      <div className="sidebar-item">
+                        <svg viewBox="0 0 24 24" fill="none"><ellipse cx="12" cy="6" rx="7" ry="3" stroke="currentColor" strokeWidth="2"/><path d="M5 6v6c0 1.6 3.1 3 7 3s7-1.4 7-3V6M5 12v5c0 1.6 3.1 3 7 3s7-1.4 7-3v-5" stroke="currentColor" strokeWidth="2"/></svg>
+                        Qarzdorlar
+                      </div>
+                    </div>
+                    <div className="sidebar-footer">
+                      <div className="sidebar-user">
+                        <div className="sidebar-avatar">A</div>
+                        <div>
+                          <div className="sidebar-uname">Akmal</div>
+                          <div className="sidebar-role">Admin</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="desktop-main">
+                    <div className="desktop-topbar">
+                      <div className="topbar-left">
+                        <div className="topbar-breadcrumb">
+                          <span className="bc-home">
+                            <svg viewBox="0 0 24 24" fill="none" style={{ width: 14, height: 14 }}><path d="M3 9l9-7 9 7v11a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z" stroke="currentColor" strokeWidth="2" strokeLinejoin="round"/></svg>
+                          </span>
+                          <span className="bc-sep">/</span>
+                          <span className="bc-current">Bosh sahifa</span>
+                        </div>
+                      </div>
+                      <div className="topbar-right">
+                        <div className="topbar-search">
+                          <svg viewBox="0 0 24 24" fill="none" style={{ width: 14, height: 14, opacity: .5 }}><circle cx="11" cy="11" r="7" stroke="currentColor" strokeWidth="2"/><path d="m20 20-3-3" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg>
+                          <span>Qidirish...</span>
+                          <span className="search-shortcut">⌘K</span>
+                        </div>
+                        <div className="topbar-actions">
+                          <div className="topbar-icon-btn">
+                            <svg viewBox="0 0 24 24" fill="none" style={{ width: 16, height: 16 }}><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><path d="M13.73 21a2 2 0 0 1-3.46 0" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                            <span className="notif-dot"></span>
+                          </div>
+                          <div className="topbar-avatar">A</div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="desktop-content">
+                      <div className="dc-header">
+                        <div>
+                          <h3 className="dc-title">Xush kelibsiz, Akmal</h3>
+                          <p className="dc-subtitle">Bugungi savdo holatingiz</p>
+                        </div>
+                        <div className="dc-actions">
+                          <div className="dc-btn">
+                            <svg viewBox="0 0 24 24" fill="none" style={{ width: 14, height: 14 }}><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                            Eksport
+                          </div>
+                          <div className="dc-btn primary">
+                            <svg viewBox="0 0 24 24" fill="none" style={{ width: 14, height: 14 }}><path d="M12 5v14M5 12h14" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round"/></svg>
+                            Yangi sotish
+                          </div>
+                        </div>
+                      </div>
+                      <div className="desktop-stats-row">
+                        <div className="d-stat">
+                          <div className="d-stat-head">
+                            <div className="d-stat-icon violet">
+                              <svg viewBox="0 0 24 24" fill="none" style={{ width: 16, height: 16 }}><path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                            </div>
+                            <span className="d-stat-change g">+12.5%</span>
+                          </div>
+                          <div className="d-stat-label">Bugungi tushum</div>
+                          <div className="d-stat-value">4 250 000 <small>so'm</small></div>
+                          <div className="d-stat-spark">
+                            <svg viewBox="0 0 100 30" preserveAspectRatio="none"><polyline points="0,25 15,22 30,18 45,20 60,12 75,8 100,5" fill="none" stroke="var(--violet)" strokeWidth="2"/><polyline points="0,25 15,22 30,18 45,20 60,12 75,8 100,5" fill="url(#sg1)" stroke="none"/><defs><linearGradient id="sg1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="var(--violet)" stopOpacity=".3"/><stop offset="100%" stopColor="var(--violet)" stopOpacity="0"/></linearGradient></defs></svg>
+                          </div>
+                        </div>
+                        <div className="d-stat">
+                          <div className="d-stat-head">
+                            <div className="d-stat-icon emerald">
+                              <svg viewBox="0 0 24 24" fill="none" style={{ width: 16, height: 16 }}><path d="M20 6L9 17l-5-5" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                            </div>
+                            <span className="d-stat-change g">+8 ta</span>
+                          </div>
+                          <div className="d-stat-label">Sotilgan</div>
+                          <div className="d-stat-value g">47 <small>dona</small></div>
+                          <div className="d-stat-spark">
+                            <svg viewBox="0 0 100 30" preserveAspectRatio="none"><polyline points="0,20 15,18 30,22 45,15 60,10 75,14 100,6" fill="none" stroke="var(--emerald)" strokeWidth="2"/></svg>
+                          </div>
+                        </div>
+                        <div className="d-stat">
+                          <div className="d-stat-head">
+                            <div className="d-stat-icon emerald">
+                              <svg viewBox="0 0 24 24" fill="none" style={{ width: 16, height: 16 }}><path d="M3 3v18h18" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/><path d="M7 14l3-4 3 3 4-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                            </div>
+                            <span className="d-stat-change g">+18%</span>
+                          </div>
+                          <div className="d-stat-label">Sof foyda</div>
+                          <div className="d-stat-value g">1 840 000 <small>so'm</small></div>
+                          <div className="d-stat-spark">
+                            <svg viewBox="0 0 100 30" preserveAspectRatio="none"><polyline points="0,22 15,20 30,15 45,18 60,8 75,12 100,3" fill="none" stroke="var(--emerald)" strokeWidth="2"/></svg>
+                          </div>
+                        </div>
+                        <div className="d-stat">
+                          <div className="d-stat-head">
+                            <div className="d-stat-icon rose">
+                              <svg viewBox="0 0 24 24" fill="none" style={{ width: 16, height: 16 }}><ellipse cx="12" cy="6" rx="7" ry="3" stroke="currentColor" strokeWidth="2"/><path d="M5 6v6c0 1.6 3.1 3 7 3s7-1.4 7-3V6M5 12v5c0 1.6 3.1 3 7 3s7-1.4 7-3v-5" stroke="currentColor" strokeWidth="2"/></svg>
+                            </div>
+                            <span className="d-stat-change r">-2 ta</span>
+                          </div>
+                          <div className="d-stat-label">Qarzdorlar</div>
+                          <div className="d-stat-value r">850 000 <small>so'm</small></div>
+                          <div className="d-stat-spark">
+                            <svg viewBox="0 0 100 30" preserveAspectRatio="none"><polyline points="0,8 15,12 30,10 45,16 60,20 75,18 100,25" fill="none" stroke="var(--rose)" strokeWidth="2"/></svg>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="desktop-panels">
+                        <div className="desktop-chart-panel">
+                          <div className="panel-header">
+                            <h4>Sotish dinamikasi</h4>
+                            <div className="panel-tabs">
+                              <span className="pt on">Hafta</span>
+                              <span className="pt">Oy</span>
+                              <span className="pt">Yil</span>
+                            </div>
+                          </div>
+                          <div className="chart-area">
+                            <svg viewBox="0 0 400 140" preserveAspectRatio="none" className="chart-svg">
+                              <defs>
+                                <linearGradient id="cg1" x1="0" y1="0" x2="0" y2="1">
+                                  <stop offset="0%" stopColor="var(--violet)" stopOpacity=".4"/>
+                                  <stop offset="100%" stopColor="var(--violet)" stopOpacity="0"/>
+                                </linearGradient>
+                              </defs>
+                              <path d="M0,110 C30,100 60,90 90,70 C120,50 150,60 180,45 C210,30 240,40 270,25 C300,10 330,20 360,15 L400,10 L400,140 L0,140Z" fill="url(#cg1)"/>
+                              <path d="M0,110 C30,100 60,90 90,70 C120,50 150,60 180,45 C210,30 240,40 270,25 C300,10 330,20 360,15 L400,10" fill="none" stroke="var(--violet)" strokeWidth="2.5"/>
+                              <circle cx="90" cy="70" r="4" fill="var(--violet)"/>
+                              <circle cx="180" cy="45" r="4" fill="var(--violet)"/>
+                              <circle cx="270" cy="25" r="4" fill="var(--violet)"/>
+                              <circle cx="400" cy="10" r="4" fill="var(--gold)"/>
+                            </svg>
+                            <div className="chart-labels">
+                              <span>Dush</span><span>Sesh</span><span>Chor</span><span>Pay</span><span>Jum</span><span>Shan</span><span>Yak</span>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="desktop-top-products">
+                          <div className="panel-header">
+                            <h4>Top mahsulotlar</h4>
+                            <span className="panel-link">Barchasi →</span>
+                          </div>
+                          <div className="tp-list">
+                            <div className="tp-item">
+                              <span className="tp-rank">1</span>
+                              <span className="tp-emoji">🍟</span>
+                              <div className="tp-info"><div className="tp-name">Lays</div><div className="tp-sold">320 ta sotildi</div></div>
+                              <div className="tp-bar-wrap"><div className="tp-bar" style={{ width: '92%' }}></div></div>
+                              <div className="tp-rev">+1.9M</div>
+                            </div>
+                            <div className="tp-item">
+                              <span className="tp-rank">2</span>
+                              <span className="tp-emoji">🍫</span>
+                              <div className="tp-info"><div className="tp-name">Snikers</div><div className="tp-sold">264 ta sotildi</div></div>
+                              <div className="tp-bar-wrap"><div className="tp-bar" style={{ width: '76%' }}></div></div>
+                              <div className="tp-rev">+1.4M</div>
+                            </div>
+                            <div className="tp-item">
+                              <span className="tp-rank">3</span>
+                              <span className="tp-emoji">⚡</span>
+                              <div className="tp-info"><div className="tp-name">Flash</div><div className="tp-sold">198 ta sotildi</div></div>
+                              <div className="tp-bar-wrap"><div className="tp-bar" style={{ width: '58%' }}></div></div>
+                              <div className="tp-rev">+0.9M</div>
+                            </div>
+                            <div className="tp-item">
+                              <span className="tp-rank">4</span>
+                              <span className="tp-emoji">🥤</span>
+                              <div className="tp-info"><div className="tp-name">Gorilla</div><div className="tp-sold">112 ta sotildi</div></div>
+                              <div className="tp-bar-wrap"><div className="tp-bar" style={{ width: '34%' }}></div></div>
+                              <div className="tp-rev">+0.6M</div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="monitor-chin"></div>
+            </div>
+          </div>
+
+          <div className="platform-cards reveal">
+            <div className="platform-card">
+              <div className="platform-glow win-glow"></div>
+              <div className="platform-icon">
+                <svg viewBox="0 0 24 24" fill="currentColor" style={{ width: 32, height: 32 }}><path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.9-1.801"/></svg>
+              </div>
+              <h4>Windows</h4>
+              <p>Windows 10 va 11 uchun</p>
+              <div className="platform-version">v2.1.0 · 86 MB</div>
+              <a href="https://t.me/dilbek7011" target="_blank" className="btn btn-ghost platform-btn">
+                <svg viewBox="0 0 24 24" fill="none" style={{ width: 16, height: 16 }}><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                Yuklab olish
+              </a>
+            </div>
+            <div className="platform-card featured">
+              <span className="platform-tag">Tavsiya etiladi</span>
+              <div className="platform-glow mac-glow"></div>
+              <div className="platform-icon mac">
+                <svg viewBox="0 0 24 24" fill="currentColor" style={{ width: 32, height: 32 }}><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+              </div>
+              <h4>macOS</h4>
+              <p>Intel va Apple Silicon</p>
+              <div className="platform-version">v2.1.0 · 94 MB</div>
+              <a href="https://t.me/dilbek7011" target="_blank" className="btn btn-gold platform-btn">
+                <svg viewBox="0 0 24 24" fill="none" style={{ width: 16, height: 16 }}><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                Yuklab olish <span className="arr">→</span>
+              </a>
+            </div>
+            <div className="platform-card">
+              <div className="platform-glow linux-glow"></div>
+              <div className="platform-icon linux">
+                <svg viewBox="0 0 24 24" fill="currentColor" style={{ width: 32, height: 32 }}><path d="M12.504 0c-.155 0-.315.008-.48.021-4.226.333-3.105 4.807-3.17 6.298-.076 1.092-.3 1.953-1.05 3.02-.885 1.051-2.127 2.75-2.716 4.521-.278.832-.41 1.684-.287 2.489a.424.424 0 00-.11.135c-.26.268-.45.6-.663.839-.199.199-.485.267-.797.4-.313.136-.658.269-.864.68-.09.189-.136.394-.132.602 0 .199.027.4.055.536.058.399.116.728.04.97-.249.68-.28 1.145-.106 1.484.174.334.535.47.94.601.81.2 1.91.135 2.774.6.926.466 1.866.67 2.616.47.526-.116.97-.464 1.208-.946.587-.003 1.23-.269 2.26-.334.699-.058 1.574.267 2.577.2.025.134.063.198.114.333l.003.003c.391.778 1.113 1.368 1.884 1.43.199.009.4.058.576.135.445.2.79.536.927 1.008.136.464.064.945-.132 1.354-.199.415-.53.772-.893.97-.099.047-.199.08-.3.115-.57.134-1.146.048-1.656-.136-.36-.135-.67-.333-.864-.535-.136-.135-.3-.334-.365-.469l-.003-.003c-.332-.536-.866-.867-1.356-.971a.37.37 0 00-.137-.024c-1.356 0-2.12 1.48-2.17 1.579-.07.093-.67.867-1.895.867-.178 0-.36-.012-.543-.035a5.56 5.56 0 01-.388.106c-.642.134-1.37.047-1.98-.398-.61-.447-.982-1.16-.982-1.864 0-.267.038-.534.113-.795.148-.408.442-.771.722-1.06.13-.135.263-.267.365-.334.136-.09.225-.18.262-.267.022-.135-.013-.267-.072-.4-.136-.334-.52-.535-.916-.601-.396-.067-.807-.003-1.133.2-.326.2-.57.536-.774.901-.203.364-.36.762-.565.961-.204.2-.527.334-.858.267a1.78 1.78 0 01-.666-.335c-.199-.2-.332-.535-.466-.867-.134-.332-.268-.664-.535-.864-.267-.2-.6-.267-.93-.134-.334.135-.6.4-.865.667-.265.267-.53.534-.864.667-.333.134-.73.134-1.062-.067-.334-.2-.565-.601-.732-1.068-.167-.466-.265-.998-.132-1.531.133-.534.398-1.069.797-1.535.4-.466.866-.8 1.265-.934.4-.134.665-.334.798-.667.133-.334.133-.735-.067-1.135-.2-.4-.532-.734-.93-.934-.399-.2-.864-.267-1.265-.067-.4.2-.665.6-.865 1.068-.2.466-.332.999-.332 1.466 0 .134.012.267.023.4.014.134.025.267.025.334 0 .267-.133.467-.333.601-.2.134-.465.2-.73.134-.267-.067-.466-.268-.6-.535-.133-.267-.2-.534-.267-.867-.066-.334-.132-.668-.132-1.002 0-.334.067-.668.2-1.002.133-.334.266-.667.465-.867.2-.2.4-.334.666-.4.267-.068.532-.068.8-.003.265.065.465.2.664.4.2.2.333.4.466.667.133.267.2.534.332.868.134.333.267.667.267 1.067 0 .4-.067.734-.2 1.001-.133.267-.2.534-.333.734-.133.2-.2.4-.4.534-.2.134-.4.2-.665.2h-.003c-.266 0-.532-.066-.73-.267-.2-.2-.333-.467-.4-.734-.068-.267-.068-.534-.068-.801 0-.267.068-.534.133-.801.066-.267.2-.534.333-.734.132-.2.265-.4.4-.534.132-.133.265-.2.4-.267.132-.066.265-.066.4-.066.133 0 .266.066.4.133.134.067.266.2.333.334.067.133.132.267.132.4 0 .133-.065.267-.132.4-.067.133-.133.267-.266.334-.133.066-.2.133-.333.133h-.002c-.133 0-.266-.067-.332-.133-.067-.067-.133-.2-.2-.334-.066-.133-.132-.267-.132-.4 0-.133.066-.267.132-.4.067-.133.133-.2.2-.267.067-.066.133-.133.266-.133.133 0 .2.067.266.133.067.067.133.134.133.267 0 .067-.067.134-.133.134-.066.066-.133.133-.266.133-.133 0-.2-.067-.266-.133-.067-.067-.067-.134-.067-.267 0-.133.067-.2.133-.267.067-.066.133-.066.2-.066z"/></svg>
+              </div>
+              <h4>Linux</h4>
+              <p>Ubuntu, Fedora, Debian</p>
+              <div className="platform-version">v2.1.0 · 78 MB</div>
+              <a href="https://t.me/dilbek7011" target="_blank" className="btn btn-ghost platform-btn">
+                <svg viewBox="0 0 24 24" fill="none" style={{ width: 16, height: 16 }}><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                Yuklab olish
+              </a>
+            </div>
+          </div>
+
+          <div className="mobile-also reveal">
+            <div className="mobile-also-inner">
+              <div className="mobile-also-icon">
+                <svg viewBox="0 0 24 24" fill="none" style={{ width: 28, height: 28 }}><rect x="5" y="2" width="14" height="20" rx="2" stroke="currentColor" strokeWidth="2"/><path d="M12 18h.01" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg>
+              </div>
+              <div>
+                <h4>Mobil qurilmalarda ham mavjud</h4>
+                <p>Android va iOS uchun Hisvex ilovasi — doimo qo'lingizda.</p>
+              </div>
+              <a href="https://t.me/dilbek7011" target="_blank" className="btn btn-ghost mobile-dl-btn">Mobil versiya</a>
+            </div>
           </div>
         </div>
       </section>
