@@ -1,16 +1,18 @@
 import { useEffect, useRef, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 
+const GH = 'https://github.com/dilb3k/hisvex-landing/releases/download/v1.0.0'
+
 const getMacDmg = () => {
   const u = navigator.userAgent
-  if (u.includes('Apple Silicon') || u.includes('arm64')) return '/downloads/Hisvex-1.0.0-arm64.dmg'
-  return '/downloads/Hisvex-1.0.0-x64.dmg'
+  if (u.includes('Apple Silicon') || u.includes('arm64')) return `${GH}/Hisvex-1.0.0-arm64.dmg`
+  return `${GH}/Hisvex-1.0.0-x64.dmg`
 }
 
 const getDesktopDownload = () => {
   const u = navigator.userAgent.toLowerCase()
   if (u.includes('mac')) return { href: getMacDmg(), label: 'macOS DMG', file: 'Hisvex-mac.dmg' }
-  if (u.includes('linux')) return { href: '/downloads/Hisvex-1.0.0.AppImage', label: 'Linux AppImage', file: 'Hisvex.AppImage' }
+  if (u.includes('linux')) return { href: `${GH}/Hisvex-1.0.0.AppImage`, label: 'Linux AppImage', file: 'Hisvex.AppImage' }
   return { href: 'https://t.me/dilbek7011', label: 'Windows', file: '' }
 }
 
@@ -633,7 +635,7 @@ function App() {
               <h4>macOS</h4>
               <p>Intel va Apple Silicon</p>
               <div className="platform-version">v1.0.0 · 121 MB</div>
-              <a href={getMacDmg()} download className="btn btn-gold platform-btn">
+              <a href={getMacDmg()} target="_blank" rel="noopener noreferrer" className="btn btn-gold platform-btn">
                 <svg viewBox="0 0 24 24" fill="none" style={{ width: 16, height: 16 }}><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
                 Yuklab olish <span className="arr">→</span>
               </a>
@@ -646,7 +648,7 @@ function App() {
               <h4>Linux</h4>
               <p>Ubuntu, Fedora, Debian</p>
               <div className="platform-version">v1.0.0 · 129 MB</div>
-              <a href="/downloads/Hisvex-1.0.0.AppImage" download="Hisvex-1.0.0.AppImage" className="btn btn-ghost platform-btn">
+              <a href={`${GH}/Hisvex-1.0.0.AppImage`} target="_blank" rel="noopener noreferrer" className="btn btn-ghost platform-btn">
                 <svg viewBox="0 0 24 24" fill="none" style={{ width: 16, height: 16 }}><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
                 Yuklab olish
               </a>
