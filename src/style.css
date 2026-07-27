@@ -448,16 +448,16 @@ header.nav{position:fixed;top:0;left:0;right:0;z-index:100;transition:.35s}
 
 /* Download section */
 .download-row{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-.dl-card{display:flex;align-items:center;gap:14px;padding:18px 20px;border:1px solid var(--line);border-radius:16px;background:var(--card);transition:.35s cubic-bezier(.2,.8,.2,1)}
+.dl-card{display:flex;align-items:center;gap:14px;padding:20px 22px;border:1px solid var(--line);border-radius:18px;background:linear-gradient(160deg,rgba(139,92,246,.06),var(--card));transition:.35s cubic-bezier(.2,.8,.2,1)}
 .dl-card:hover{border-color:rgba(167,139,250,.35);transform:translateY(-4px);box-shadow:0 20px 50px -20px rgba(0,0,0,.5)}
-.dl-icon{width:48px;height:48px;border-radius:14px;display:grid;place-items:center;flex-shrink:0}
+.dl-icon{width:50px;height:50px;border-radius:14px;display:grid;place-items:center;flex-shrink:0}
 .dl-icon.android{background:rgba(52,211,153,.1);border:1px solid rgba(52,211,153,.2);color:var(--emerald)}
 .dl-icon.desktop{background:rgba(139,92,246,.1);border:1px solid rgba(139,92,246,.2);color:var(--violet-2)}
 .dl-icon.web{background:rgba(230,192,121,.1);border:1px solid rgba(230,192,121,.2);color:var(--gold)}
 .dl-info{flex:1;min-width:0}
-.dl-info h4{font-size:15px;font-weight:700;margin-bottom:1px}
-.dl-info p{color:var(--muted);font-size:12px}
-.dl-btn{flex-shrink:0;font-size:12px;padding:10px 16px;border-radius:10px}
+.dl-info h4{font-size:16px;font-weight:700;margin-bottom:2px}
+.dl-info p{color:var(--muted);font-size:13px}
+.dl-btn{flex-shrink:0;font-size:13px;padding:11px 18px;border-radius:12px;font-weight:700}
 
 footer{border-top:1px solid var(--line);padding:64px 0 36px;margin-top:90px}
 .foot-grid{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:40px;margin-bottom:48px}
@@ -519,7 +519,11 @@ footer{border-top:1px solid var(--line);padding:64px 0 36px;margin-top:90px}
   .platform-version{font-size:9.5px;margin-bottom:14px}
   .mobile-also-inner{flex-wrap:wrap;gap:14px;padding:16px 20px}
   .download-row{grid-template-columns:1fr;gap:10px}
-  .dl-card{padding:14px 16px}
+  .dl-card{padding:16px 18px}
+  .dl-icon{width:44px;height:44px;border-radius:12px}
+  .dl-info h4{font-size:14px}
+  .dl-info p{font-size:12px}
+  .dl-btn{font-size:12px;padding:9px 14px}
 }
 @media(max-width:560px){
   .wrap{padding:0 16px}

@@ -7,6 +7,13 @@ const getMacDmg = () => {
   return '/downloads/Hisvex-1.0.0-x64.dmg'
 }
 
+const getDesktopDownload = () => {
+  const u = navigator.userAgent.toLowerCase()
+  if (u.includes('mac')) return { href: getMacDmg(), label: 'macOS DMG', file: 'Hisvex-mac.dmg' }
+  if (u.includes('linux')) return { href: '/downloads/Hisvex-1.0.0.AppImage', label: 'Linux AppImage', file: 'Hisvex.AppImage' }
+  return { href: 'https://t.me/dilbek7011', label: 'Windows', file: '' }
+}
+
 const I = {
   s: '<svg viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/><path d="m20 20-3-3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>',
   lock: '<svg viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="9" rx="2" stroke="currentColor" stroke-width="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3" stroke="currentColor" stroke-width="2"/></svg>',
@@ -263,7 +270,7 @@ function App() {
         </div></div>
       </section>
 
-      <section className="sec" style={{ paddingTop: 20, paddingBottom: 40 }}>
+      <section className="sec" style={{ paddingTop: 30, paddingBottom: 50 }}>
         <div className="wrap">
           <div className="download-row reveal">
             <div className="dl-card">
@@ -272,9 +279,9 @@ function App() {
               </div>
               <div className="dl-info">
                 <h4>Android</h4>
-                <p>Google Play orqali yuklab oling</p>
+                <p>APK faylni to'g'ridan-to'g'ri yuklab oling</p>
               </div>
-              <a href="https://t.me/dilbek7011" target="_blank" rel="noopener noreferrer" className="btn btn-gold dl-btn">
+              <a href="https://expo.dev/accounts/hisvex/projects/hisvex/builds/c9e8607d-1b30-4a38-817d-45236e35894c" target="_blank" rel="noopener noreferrer" className="btn btn-gold dl-btn">
                 <svg viewBox="0 0 24 24" fill="none" style={{ width: 16, height: 16 }}><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
                 Yuklab olish <span className="arr">→</span>
               </a>
@@ -285,11 +292,11 @@ function App() {
               </div>
               <div className="dl-info">
                 <h4>Desktop</h4>
-                <p>Windows, macOS, Linux</p>
+                <p>{getDesktopDownload().label} uchun</p>
               </div>
-              <a href="#desktop" className="btn btn-ghost dl-btn">
+              <a href={getDesktopDownload().href} download={getDesktopDownload().file || undefined} target={getDesktopDownload().file ? undefined : '_blank'} rel="noopener noreferrer" className="btn btn-ghost dl-btn">
                 <svg viewBox="0 0 24 24" fill="none" style={{ width: 16, height: 16 }}><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                Batafsil
+                Yuklab olish
               </a>
             </div>
             <div className="dl-card">
@@ -300,7 +307,7 @@ function App() {
                 <h4>Web versiya</h4>
                 <p>Brauzer orqali ishlating</p>
               </div>
-              <a href="https://t.me/dilbek7011" target="_blank" rel="noopener noreferrer" className="btn btn-ghost dl-btn">
+              <a href="https://hisvex.uz" target="_blank" rel="noopener noreferrer" className="btn btn-ghost dl-btn">
                 <svg viewBox="0 0 24 24" fill="none" style={{ width: 16, height: 16 }}><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
                 Ochish
               </a>
@@ -655,7 +662,7 @@ function App() {
                 <h4>Mobil qurilmalarda ham mavjud</h4>
                 <p>Android va iOS uchun Hisvex ilovasi — doimo qo'lingizda.</p>
               </div>
-              <a href="https://t.me/dilbek7011" target="_blank" className="btn btn-ghost mobile-dl-btn">Mobil versiya</a>
+              <a href="https://expo.dev/accounts/hisvex/projects/hisvex/builds/c9e8607d-1b30-4a38-817d-45236e35894c" target="_blank" className="btn btn-ghost mobile-dl-btn">Mobil versiya</a>
             </div>
           </div>
         </div>
