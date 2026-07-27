@@ -1,6 +1,12 @@
 import { useEffect, useRef, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 
+const getMacDmg = () => {
+  const u = navigator.userAgent
+  if (u.includes('Apple Silicon') || u.includes('arm64')) return '/downloads/Hisvex-1.0.0-arm64.dmg'
+  return '/downloads/Hisvex-1.0.0-x64.dmg'
+}
+
 const I = {
   s: '<svg viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/><path d="m20 20-3-3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>',
   lock: '<svg viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="9" rx="2" stroke="currentColor" stroke-width="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3" stroke="currentColor" stroke-width="2"/></svg>',
@@ -283,7 +289,7 @@ function App() {
               </div>
               <a href="#desktop" className="btn btn-ghost dl-btn">
                 <svg viewBox="0 0 24 24" fill="none" style={{ width: 16, height: 16 }}><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                Yuklab olish
+                Batafsil
               </a>
             </div>
             <div className="dl-card">
@@ -605,10 +611,10 @@ function App() {
               </div>
               <h4>Windows</h4>
               <p>Windows 10 va 11 uchun</p>
-              <div className="platform-version">v2.1.0 · 86 MB</div>
+              <div className="platform-version">v1.0.0 · Tez orada</div>
               <a href="https://t.me/dilbek7011" target="_blank" className="btn btn-ghost platform-btn">
-                <svg viewBox="0 0 24 24" fill="none" style={{ width: 16, height: 16 }}><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                Yuklab olish
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M22 3 2 10.5l5.5 2L17 6l-7 8.5V20l3-3.5 4 3z" /></svg>
+                Telegramdan olish
               </a>
             </div>
             <div className="platform-card featured">
@@ -619,8 +625,8 @@ function App() {
               </div>
               <h4>macOS</h4>
               <p>Intel va Apple Silicon</p>
-              <div className="platform-version">v2.1.0 · 94 MB</div>
-              <a href="https://t.me/dilbek7011" target="_blank" className="btn btn-gold platform-btn">
+              <div className="platform-version">v1.0.0 · 121 MB</div>
+              <a href={getMacDmg()} download className="btn btn-gold platform-btn">
                 <svg viewBox="0 0 24 24" fill="none" style={{ width: 16, height: 16 }}><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
                 Yuklab olish <span className="arr">→</span>
               </a>
@@ -632,8 +638,8 @@ function App() {
               </div>
               <h4>Linux</h4>
               <p>Ubuntu, Fedora, Debian</p>
-              <div className="platform-version">v2.1.0 · 78 MB</div>
-              <a href="https://t.me/dilbek7011" target="_blank" className="btn btn-ghost platform-btn">
+              <div className="platform-version">v1.0.0 · 129 MB</div>
+              <a href="/downloads/Hisvex-1.0.0.AppImage" download="Hisvex-1.0.0.AppImage" className="btn btn-ghost platform-btn">
                 <svg viewBox="0 0 24 24" fill="none" style={{ width: 16, height: 16 }}><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
                 Yuklab olish
               </a>
