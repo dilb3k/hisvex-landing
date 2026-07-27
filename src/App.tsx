@@ -281,7 +281,7 @@ function App() {
                 <h4>Android</h4>
                 <p>APK faylni to'g'ridan-to'g'ri yuklab oling</p>
               </div>
-              <a href="https://expo.dev/accounts/hisvex/projects/hisvex/builds/c9e8607d-1b30-4a38-817d-45236e35894c" target="_blank" rel="noopener noreferrer" className="btn btn-gold dl-btn">
+              <a href="/downloads/hisvex-1.0.0.aab" download="hisvex-1.0.0.aab" className="btn btn-gold dl-btn">
                 <svg viewBox="0 0 24 24" fill="none" style={{ width: 16, height: 16 }}><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
                 Yuklab olish <span className="arr">→</span>
               </a>
@@ -662,7 +662,7 @@ function App() {
                 <h4>Mobil qurilmalarda ham mavjud</h4>
                 <p>Android va iOS uchun Hisvex ilovasi — doimo qo'lingizda.</p>
               </div>
-              <a href="https://expo.dev/accounts/hisvex/projects/hisvex/builds/c9e8607d-1b30-4a38-817d-45236e35894c" target="_blank" className="btn btn-ghost mobile-dl-btn">Mobil versiya</a>
+              <a href="/downloads/hisvex-1.0.0.aab" download="hisvex-1.0.0.aab" className="btn btn-ghost mobile-dl-btn">Mobil versiya</a>
             </div>
           </div>
         </div>

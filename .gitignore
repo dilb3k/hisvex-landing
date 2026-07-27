@@ -23,5 +23,7 @@ dist-ssr
 *.sln
 *.sw?
 
-# Desktop build files (hosted on GitHub Releases)
-public/downloads/
+# Large desktop builds (>100MB, use GitHub Releases)
+public/downloads/Hisvex-1.0.0-arm64.dmg
+public/downloads/Hisvex-1.0.0-x64.dmg
+public/downloads/Hisvex-1.0.0.AppImage
