@@ -13,7 +13,7 @@ const getDesktopDownload = () => {
   const u = navigator.userAgent.toLowerCase()
   if (u.includes('mac')) return { href: getMacDmg(), label: 'macOS DMG', file: 'Hisvex-mac.dmg' }
   if (u.includes('linux')) return { href: `${GH}/Hisvex-1.0.0.AppImage`, label: 'Linux AppImage', file: 'Hisvex.AppImage' }
-  return { href: 'https://t.me/dilbek7011', label: 'Windows', file: '' }
+  return { href: '/downloads/Hisvex-Setup-1.0.1.exe', label: 'Windows', file: 'Hisvex-Setup-1.0.1.exe' }
 }
 
 const I = {
@@ -251,6 +251,7 @@ function App() {
             <p className="lead reveal d2">Hisvex — mahsulot, ombor, savdo, qarzdor va statistikani <b style={{ color: 'var(--text)' }}>bitta ilovada</b> boshqaradi. Internetsiz ham ishlaydi, har bir so'm aniq hisoblanadi — hech qanday anglashilmovchiliksiz.</p>
             <div className="hero-cta reveal d3">
               <a href="https://t.me/dilbek7011" target="_blank" className="btn btn-gold">Hoziroq boshlash <span className="arr">→</span></a>
+              <a href="#download-section" onClick={(e) => { e.preventDefault(); document.getElementById('download-section')?.scrollIntoView({ behavior: 'smooth' }) }} className="btn btn-ghost">Yuklab olish <span className="arr">↓</span></a>
               <a href="/ekranlar" className="btn btn-ghost">Ilovani ko'rish</a>
             </div>
             <div className="hero-stats reveal d4">
@@ -272,7 +273,7 @@ function App() {
         </div></div>
       </section>
 
-      <section className="sec" style={{ paddingTop: 30, paddingBottom: 50 }}>
+      <section className="sec" style={{ paddingTop: 30, paddingBottom: 50 }} id="download-section">
         <div className="wrap">
           <div className="download-row reveal">
             <div className="dl-card">
@@ -620,10 +621,10 @@ function App() {
               </div>
               <h4>Windows</h4>
               <p>Windows 10 va 11 uchun</p>
-              <div className="platform-version">v1.0.0 · Tez orada</div>
-              <a href="https://t.me/dilbek7011" target="_blank" className="btn btn-ghost platform-btn">
-                <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M22 3 2 10.5l5.5 2L17 6l-7 8.5V20l3-3.5 4 3z" /></svg>
-                Telegramdan olish
+              <div className="platform-version">v1.0.1 · 105 MB</div>
+              <a href="/downloads/Hisvex-Setup-1.0.1.exe" download="Hisvex-Setup-1.0.1.exe" className="btn btn-ghost platform-btn">
+                <svg viewBox="0 0 24 24" fill="none" style={{ width: 16, height: 16 }}><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                Yuklab olish
               </a>
             </div>
             <div className="platform-card featured">
