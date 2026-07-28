@@ -610,9 +610,20 @@ function App() {
                 Yuklab olish
               </a>
             </div>
+            <div className="platform-card">
+              <div className="platform-glow"></div>
+              <div className="platform-icon android">
+                <svg viewBox="0 0 24 24" fill="currentColor" style={{ width: 32, height: 32 }}><path d="M17.6 9.48l1.84-3.18c.16-.31.04-.69-.27-.85-.31-.16-.69-.04-.85.27l-1.87 3.23c-1.15-.48-2.44-.75-3.8-.75s-2.65.27-3.8.75L6.98 5.72c-.16-.31-.54-.43-.85-.27-.31.16-.43.55-.27.85L7.7 9.48C4.48 11.24 2.28 14.38 2 18h20c-.28-3.62-2.48-6.76-5.7-8.52zM7 15.25a1.25 1.25 0 110-2.5 1.25 1.25 0 010 2.5zm10 0a1.25 1.25 0 110-2.5 1.25 1.25 0 010 2.5z"/></svg>
+              </div>
+              <h4>Android</h4>
+              <p>APK faylni to'g'ridan-to'g'ri yuklab oling</p>
+              <div className="platform-version">v1.0.0</div>
+              <a href="https://expo.dev/accounts/hisvex/projects/hisvex/builds/c9e8607d-1b30-4a38-817d-45236e35894c" target="_blank" rel="noopener noreferrer" className="btn btn-ghost platform-btn">
+                <svg viewBox="0 0 24 24" fill="none" style={{ width: 16, height: 16 }}><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                Yuklab olish
+              </a>
+            </div>
           </div>
-
-
         </div>
       </section>
 
