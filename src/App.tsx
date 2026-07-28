@@ -273,51 +273,7 @@ function App() {
         </div></div>
       </section>
 
-      <section className="sec" style={{ paddingTop: 30, paddingBottom: 50 }} id="download-section">
-        <div className="wrap">
-          <div className="download-row reveal">
-            <div className="dl-card">
-              <div className="dl-icon android">
-                <svg viewBox="0 0 24 24" fill="currentColor" style={{ width: 28, height: 28 }}><path d="M17.6 9.48l1.84-3.18c.16-.31.04-.69-.27-.85-.31-.16-.69-.04-.85.27l-1.87 3.23c-1.15-.48-2.44-.75-3.8-.75s-2.65.27-3.8.75L6.98 5.72c-.16-.31-.54-.43-.85-.27-.31.16-.43.55-.27.85L7.7 9.48C4.48 11.24 2.28 14.38 2 18h20c-.28-3.62-2.48-6.76-5.7-8.52zM7 15.25a1.25 1.25 0 110-2.5 1.25 1.25 0 010 2.5zm10 0a1.25 1.25 0 110-2.5 1.25 1.25 0 010 2.5z"/></svg>
-              </div>
-              <div className="dl-info">
-                <h4>Android</h4>
-                <p>APK faylni to'g'ridan-to'g'ri yuklab oling</p>
-              </div>
-              <a href="/downloads/hisvex-1.0.0.aab" download="hisvex-1.0.0.aab" className="btn btn-gold dl-btn">
-                <svg viewBox="0 0 24 24" fill="none" style={{ width: 16, height: 16 }}><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                Yuklab olish <span className="arr">→</span>
-              </a>
-            </div>
-            <div className="dl-card">
-              <div className="dl-icon desktop">
-                <svg viewBox="0 0 24 24" fill="none" style={{ width: 28, height: 28 }}><rect x="2" y="3" width="20" height="14" rx="2" stroke="currentColor" strokeWidth="2"/><path d="M8 21h8M12 17v4" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg>
-              </div>
-              <div className="dl-info">
-                <h4>Desktop</h4>
-                <p>{getDesktopDownload().label} uchun</p>
-              </div>
-              <a href={getDesktopDownload().href} download={getDesktopDownload().file || undefined} target={getDesktopDownload().file ? undefined : '_blank'} rel="noopener noreferrer" className="btn btn-ghost dl-btn">
-                <svg viewBox="0 0 24 24" fill="none" style={{ width: 16, height: 16 }}><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                Yuklab olish
-              </a>
-            </div>
-            <div className="dl-card">
-              <div className="dl-icon web">
-                <svg viewBox="0 0 24 24" fill="none" style={{ width: 28, height: 28 }}><circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2"/><path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z" stroke="currentColor" strokeWidth="2"/></svg>
-              </div>
-              <div className="dl-info">
-                <h4>Web versiya</h4>
-                <p>Brauzer orqali ishlating</p>
-              </div>
-              <a href="https://hisvex.uz" target="_blank" rel="noopener noreferrer" className="btn btn-ghost dl-btn">
-                <svg viewBox="0 0 24 24" fill="none" style={{ width: 16, height: 16 }}><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                Ochish
-              </a>
-            </div>
-          </div>
-        </div>
-      </section>
+
 
       <section className="sec" id="imkoniyatlar">
         <div className="wrap">
@@ -375,7 +331,7 @@ function App() {
         </div>
       </section>
 
-      <section className="sec" id="desktop">
+      <section className="sec" id="download-section" style={{ scrollMarginTop: 80 }}>
         <div className="wrap">
           <div className="sec-head reveal" style={{ textAlign: 'center', margin: '0 auto 54px' as any }}>
             <span className="eyebrow"><span className="dot"></span>Desktop versiya</span>
@@ -627,8 +583,7 @@ function App() {
                 Yuklab olish
               </a>
             </div>
-            <div className="platform-card featured">
-              <span className="platform-tag">Tavsiya etiladi</span>
+            <div className="platform-card">
               <div className="platform-glow mac-glow"></div>
               <div className="platform-icon mac">
                 <svg viewBox="0 0 24 24" fill="currentColor" style={{ width: 32, height: 32 }}><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
@@ -656,18 +611,7 @@ function App() {
             </div>
           </div>
 
-          <div className="mobile-also reveal">
-            <div className="mobile-also-inner">
-              <div className="mobile-also-icon">
-                <svg viewBox="0 0 24 24" fill="none" style={{ width: 28, height: 28 }}><rect x="5" y="2" width="14" height="20" rx="2" stroke="currentColor" strokeWidth="2"/><path d="M12 18h.01" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg>
-              </div>
-              <div>
-                <h4>Mobil qurilmalarda ham mavjud</h4>
-                <p>Android va iOS uchun Hisvex ilovasi — doimo qo'lingizda.</p>
-              </div>
-              <a href="/downloads/hisvex-1.0.0.aab" download="hisvex-1.0.0.aab" className="btn btn-ghost mobile-dl-btn">Mobil versiya</a>
-            </div>
-          </div>
+
         </div>
       </section>
 
