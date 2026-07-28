@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 
 const GH = 'https://github.com/dilb3k/hisvex-landing/releases/download/v1.0.0'
+const GH1 = 'https://github.com/dilb3k/hisvex-landing/releases/download/v1.0.1'
 
 const getMacDmg = () => {
   const u = navigator.userAgent
@@ -13,7 +14,7 @@ const getDesktopDownload = () => {
   const u = navigator.userAgent.toLowerCase()
   if (u.includes('mac')) return { href: getMacDmg(), label: 'macOS DMG', file: 'Hisvex-mac.dmg' }
   if (u.includes('linux')) return { href: `${GH}/Hisvex-1.0.0.AppImage`, label: 'Linux AppImage', file: 'Hisvex.AppImage' }
-  return { href: '/downloads/Hisvex-Setup-1.0.1.exe', label: 'Windows', file: 'Hisvex-Setup-1.0.1.exe' }
+  return { href: `${GH1}/Hisvex-Setup-1.0.1.exe`, label: 'Windows', file: 'Hisvex-Setup-1.0.1.exe' }
 }
 
 const I = {
@@ -578,7 +579,7 @@ function App() {
               <h4>Windows</h4>
               <p>Windows 10 va 11 uchun</p>
               <div className="platform-version">v1.0.1 · 105 MB</div>
-              <a href="/downloads/Hisvex-Setup-1.0.1.exe" download="Hisvex-Setup-1.0.1.exe" className="btn btn-ghost platform-btn">
+              <a href="https://github.com/dilb3k/hisvex-landing/releases/download/v1.0.1/Hisvex-Setup-1.0.1.exe" target="_blank" rel="noopener noreferrer" className="btn btn-gold platform-btn">
                 <svg viewBox="0 0 24 24" fill="none" style={{ width: 16, height: 16 }}><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
                 Yuklab olish
               </a>
