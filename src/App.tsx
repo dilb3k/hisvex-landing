@@ -251,7 +251,7 @@ function App() {
             <h1 className="display reveal d1">Hisob-kitob <span className="it">mukammalligi</span> — cho'ntagingizda.</h1>
             <p className="lead reveal d2">Hisvex — mahsulot, ombor, savdo, qarzdor va statistikani <b style={{ color: 'var(--text)' }}>bitta ilovada</b> boshqaradi. Internetsiz ham ishlaydi, har bir so'm aniq hisoblanadi — hech qanday anglashilmovchiliksiz.</p>
             <div className="hero-cta reveal d3">
-              <a href="https://hisvex.uz" target="_blank" rel="noopener noreferrer" className="btn btn-gold">Hoziroq boshlash <span className="arr">→</span></a>
+              <a href="https://hisvex-web.vercel.app" target="_blank" rel="noopener noreferrer" className="btn btn-gold">Hoziroq boshlash <span className="arr">→</span></a>
               <a href="#download-section" onClick={(e) => { e.preventDefault(); document.getElementById('download-section')?.scrollIntoView({ behavior: 'smooth' }) }} className="btn btn-ghost">Yuklab olish <span className="arr">↓</span></a>
               <a href="/ekranlar" className="btn btn-ghost">Ilovani ko'rish</a>
             </div>
@@ -630,7 +630,7 @@ function App() {
               </div>
               <h4>Web versiya</h4>
               <p>Brauzer orqali ishlating</p>
-              <a href="https://hisvex.uz" target="_blank" rel="noopener noreferrer" className="btn btn-gold platform-btn">
+              <a href="https://hisvex-web.vercel.app" target="_blank" rel="noopener noreferrer" className="btn btn-gold platform-btn">
                 <svg viewBox="0 0 24 24" fill="none" style={{ width: 16, height: 16 }}><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
                 Ochish
               </a>
@@ -728,7 +728,7 @@ function App() {
             <h2 style={{ marginTop: 18 }}>Biznesingiz <span className="it" style={{ fontStyle: 'italic', color: 'var(--gold)' }}>aniq raqamlarni</span> kutmoqda</h2>
             <p className="lead">Hisvex bilan har bir so'mni nazoratga oling. Bugun o'rnating — ertaga farqini ko'ring.</p>
             <div style={{ display: 'flex', gap: 14, justifyContent: 'center', flexWrap: 'wrap' }}>
-              <a href="https://hisvex.uz" target="_blank" rel="noopener noreferrer" className="btn btn-gold">Hoziroq boshlash <span className="arr">→</span></a>
+              <a href="https://hisvex-web.vercel.app" target="_blank" rel="noopener noreferrer" className="btn btn-gold">Hoziroq boshlash <span className="arr">→</span></a>
               <a href="/imkoniyatlar" className="btn btn-ghost">Imkoniyatlarni ko'rish</a>
             </div>
           </div>
