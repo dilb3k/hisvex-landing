@@ -6,15 +6,15 @@ const GH1 = 'https://github.com/dilb3k/hisvex-landing/releases/download/v1.0.2'
 
 const getMacDmg = () => {
   const u = navigator.userAgent
-  if (u.includes('Apple Silicon') || u.includes('arm64')) return `${GH}/Hisvex-1.0.1-arm64.dmg`
-  return `${GH}/Hisvex-1.0.1-x64.dmg`
+  if (u.includes('Apple Silicon') || u.includes('arm64')) return `${GH}/Hisvex-1.0.2-arm64.dmg`
+  return `${GH}/Hisvex-1.0.2-x64.dmg`
 }
 
 const getDesktopDownload = () => {
   const u = navigator.userAgent.toLowerCase()
   if (u.includes('mac')) return { href: getMacDmg(), label: 'macOS DMG', file: 'Hisvex-mac.dmg' }
-  if (u.includes('linux')) return { href: `${GH}/Hisvex-1.0.1.AppImage`, label: 'Linux AppImage', file: 'Hisvex.AppImage' }
-  return { href: `${GH1}/Hisvex-Setup-1.0.1.exe`, label: 'Windows', file: 'Hisvex-Setup-1.0.1.exe' }
+  if (u.includes('linux')) return { href: `${GH}/Hisvex-1.0.2.AppImage`, label: 'Linux AppImage', file: 'Hisvex.AppImage' }
+  return { href: `${GH1}/Hisvex-Setup-1.0.2.exe`, label: 'Windows', file: 'Hisvex-Setup-1.0.2.exe' }
 }
 
 const I = {
@@ -217,10 +217,8 @@ function App() {
 
       <header className="nav" id="nav">
         <div className="nav-inner">
-          <a href="/top" className="brand" style={{ gap: 8 }}>
-            <span style={{ display: 'flex', alignItems: 'center', height: 55, overflow: 'hidden' }}>
-              <img src="/Hisvex.png" alt="Hisvex" style={{ height: 110, width: 'auto', display: 'block', objectFit: 'cover', objectPosition: 'center' }} />
-            </span>
+          <a href="/top" className="brand" style={{ gap: 10 }}>
+            <img src="/Hisvex.png" alt="Hisvex" style={{ width: 40, height: 40, borderRadius: '50%', objectFit: 'cover', display: 'block' }} />
             <span><span style={{ color: '#8B5CF6', fontSize: 28, fontWeight: 700 }}>His</span><span style={{ color: '#FFF', fontSize: 28, fontWeight: 700 }}>vex</span></span>
           </a>
           <nav className="nav-links">
@@ -353,7 +351,7 @@ function App() {
                 <div className="desktop-app">
                   <div className="desktop-sidebar">
                     <div className="sidebar-brand">
-                      <div className="sidebar-logo">H</div>
+                      <img src="/Hisvex.png" alt="Hisvex" style={{ width: 28, height: 28, borderRadius: '50%', objectFit: 'cover', flexShrink: 0 }} />
                       <span><span style={{ color: 'var(--violet)', fontWeight: 700 }}>His</span><span style={{ color: '#fff', fontWeight: 700 }}>vex</span></span>
                     </div>
                     <div className="sidebar-section">Asosiy</div>
@@ -578,8 +576,8 @@ function App() {
               </div>
               <h4>Windows</h4>
               <p>Windows 10 va 11 uchun</p>
-              <div className="platform-version">v1.0.1 · 105 MB</div>
-              <a href="https://github.com/dilb3k/hisvex-landing/releases/download/v1.0.2/Hisvex-Setup-1.0.1.exe" target="_blank" rel="noopener noreferrer" className="btn btn-gold platform-btn">
+              <div className="platform-version">v1.0.2 · 105 MB</div>
+              <a href="https://github.com/dilb3k/hisvex-landing/releases/download/v1.0.2/Hisvex-Setup-1.0.2.exe" target="_blank" rel="noopener noreferrer" className="btn btn-gold platform-btn">
                 <svg viewBox="0 0 24 24" fill="none" style={{ width: 16, height: 16 }}><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
                 Yuklab olish
               </a>
@@ -591,7 +589,7 @@ function App() {
               </div>
               <h4>macOS</h4>
               <p>Intel va Apple Silicon</p>
-              <div className="platform-version">v1.0.1 · 121 MB</div>
+              <div className="platform-version">v1.0.2 · 121 MB</div>
               <a href={getMacDmg()} target="_blank" rel="noopener noreferrer" className="btn btn-gold platform-btn">
                 <svg viewBox="0 0 24 24" fill="none" style={{ width: 16, height: 16 }}><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
                 Yuklab olish <span className="arr">→</span>
@@ -604,8 +602,8 @@ function App() {
               </div>
               <h4>Linux</h4>
               <p>Ubuntu, Fedora, Debian</p>
-              <div className="platform-version">v1.0.1 · 129 MB</div>
-              <a href={`${GH}/Hisvex-1.0.1.AppImage`} target="_blank" rel="noopener noreferrer" className="btn btn-ghost platform-btn">
+              <div className="platform-version">v1.0.2 · 129 MB</div>
+              <a href={`${GH}/Hisvex-1.0.2.AppImage`} target="_blank" rel="noopener noreferrer" className="btn btn-ghost platform-btn">
                 <svg viewBox="0 0 24 24" fill="none" style={{ width: 16, height: 16 }}><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
                 Yuklab olish
               </a>
@@ -739,10 +737,8 @@ function App() {
         <div className="wrap">
           <div className="foot-grid">
             <div className="foot-brand">
-              <a href="/top" className="brand" style={{ gap: 8 }}>
-                <span style={{ display: 'flex', alignItems: 'center', height: 55, overflow: 'hidden' }}>
-                  <img src="/Hisvex.png" alt="Hisvex" style={{ height: 110, width: 'auto', display: 'block', objectFit: 'cover', objectPosition: 'center' }} />
-                </span>
+              <a href="/top" className="brand" style={{ gap: 10 }}>
+                <img src="/Hisvex.png" alt="Hisvex" style={{ width: 40, height: 40, borderRadius: '50%', objectFit: 'cover', display: 'block' }} />
                 <span><span style={{ color: '#8B5CF6', fontSize: 28, fontWeight: 700 }}>His</span><span style={{ color: '#FFF', fontSize: 28, fontWeight: 700 }}>vex</span></span>
               </a>
               <p>Bar, kafe va do'konlar uchun premium hisob-kitob ilovasi. Oddiy, tez va ishonchli.</p>

@@ -57,10 +57,8 @@ function PrivacyPage() {
 
       <header className="nav" id="nav">
         <div className="nav-inner">
-          <a href="/top" className="brand" style={{ gap: 8 }}>
-            <span style={{ display: 'flex', alignItems: 'center', height: 55, overflow: 'hidden' }}>
-              <img src="/Hisvex.png" alt="Hisvex" style={{ height: 110, width: 'auto', display: 'block', objectFit: 'cover', objectPosition: 'center' }} />
-            </span>
+          <a href="/top" className="brand" style={{ gap: 10 }}>
+            <img src="/Hisvex.png" alt="Hisvex" style={{ width: 40, height: 40, borderRadius: '50%', objectFit: 'cover', display: 'block' }} />
             <span><span style={{ color: '#8B5CF6', fontSize: 28, fontWeight: 700 }}>His</span><span style={{ color: '#FFF', fontSize: 28, fontWeight: 700 }}>vex</span></span>
           </a>
           <nav className="nav-links">
