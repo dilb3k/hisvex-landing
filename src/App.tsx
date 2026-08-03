@@ -218,7 +218,7 @@ function App() {
       <header className="nav" id="nav">
         <div className="nav-inner">
           <a href="/top" className="brand" style={{ gap: 10 }}>
-            <img src="/Hisvex-icon.png" alt="Hisvex" style={{ width: 30, height: 45, objectFit: 'contain', display: 'block' }} />
+            <img src="/Hisvex-icon.png" alt="Hisvex" style={{ width: 36, height: 36, objectFit: 'contain', display: 'block' }} />
             <span><span style={{ color: '#8B5CF6', fontSize: 28, fontWeight: 700 }}>is</span><span style={{ color: '#FFF', fontSize: 28, fontWeight: 700 }}>vex</span></span>
           </a>
           <nav className="nav-links">
@@ -351,7 +351,7 @@ function App() {
                 <div className="desktop-app">
                   <div className="desktop-sidebar">
                     <div className="sidebar-brand">
-                      <img src="/Hisvex-icon.png" alt="Hisvex" style={{ width: 20, height: 30, objectFit: 'contain', flexShrink: 0 }} />
+                      <img src="/Hisvex-icon.png" alt="Hisvex" style={{ width: 22, height: 22, objectFit: 'contain', flexShrink: 0 }} />
                       <span><span style={{ color: 'var(--violet)', fontWeight: 700 }}>is</span><span style={{ color: '#fff', fontWeight: 700 }}>vex</span></span>
                     </div>
                     <div className="sidebar-section">Asosiy</div>
@@ -738,7 +738,7 @@ function App() {
           <div className="foot-grid">
             <div className="foot-brand">
               <a href="/top" className="brand" style={{ gap: 10 }}>
-                <img src="/Hisvex-icon.png" alt="Hisvex" style={{ width: 30, height: 45, objectFit: 'contain', display: 'block' }} />
+                <img src="/Hisvex-icon.png" alt="Hisvex" style={{ width: 32, height: 32, objectFit: 'contain', display: 'block' }} />
                 <span><span style={{ color: '#8B5CF6', fontSize: 28, fontWeight: 700 }}>is</span><span style={{ color: '#FFF', fontSize: 28, fontWeight: 700 }}>vex</span></span>
               </a>
               <p>Bar, kafe va do'konlar uchun premium hisob-kitob ilovasi. Oddiy, tez va ishonchli.</p>
