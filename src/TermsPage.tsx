@@ -58,8 +58,8 @@ function TermsPage() {
       <header className="nav" id="nav">
         <div className="nav-inner">
           <a href="/top" className="brand" style={{ gap: 10 }}>
-            <img src="/Hisvex.png" alt="Hisvex" style={{ width: 40, height: 40, borderRadius: '50%', objectFit: 'cover', display: 'block' }} />
-            <span><span style={{ color: '#8B5CF6', fontSize: 28, fontWeight: 700 }}>His</span><span style={{ color: '#FFF', fontSize: 28, fontWeight: 700 }}>vex</span></span>
+            <img src="/Hisvex-icon.png" alt="Hisvex" style={{ width: 30, height: 45, objectFit: 'contain', display: 'block' }} />
+            <span><span style={{ color: '#8B5CF6', fontSize: 28, fontWeight: 700 }}>is</span><span style={{ color: '#FFF', fontSize: 28, fontWeight: 700 }}>vex</span></span>
           </a>
           <nav className="nav-links">
             <a href="/imkoniyatlar">Imkoniyatlar</a><a href="/ekranlar">Ekranlar</a><a href="/narxlar">Narxlar</a><a href="/privacy">Privacy</a><a href="/faq">Savollar</a>

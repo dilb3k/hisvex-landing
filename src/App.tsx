@@ -218,8 +218,8 @@ function App() {
       <header className="nav" id="nav">
         <div className="nav-inner">
           <a href="/top" className="brand" style={{ gap: 10 }}>
-            <img src="/Hisvex.png" alt="Hisvex" style={{ width: 40, height: 40, borderRadius: '50%', objectFit: 'cover', display: 'block' }} />
-            <span><span style={{ color: '#8B5CF6', fontSize: 28, fontWeight: 700 }}>His</span><span style={{ color: '#FFF', fontSize: 28, fontWeight: 700 }}>vex</span></span>
+            <img src="/Hisvex-icon.png" alt="Hisvex" style={{ width: 30, height: 45, objectFit: 'contain', display: 'block' }} />
+            <span><span style={{ color: '#8B5CF6', fontSize: 28, fontWeight: 700 }}>is</span><span style={{ color: '#FFF', fontSize: 28, fontWeight: 700 }}>vex</span></span>
           </a>
           <nav className="nav-links">
             <a href="/imkoniyatlar">Imkoniyatlar</a><a href="/ekranlar">Ekranlar</a><a href="/narxlar">Narxlar</a><a href="/privacy">Privacy</a><a href="/faq">Savollar</a>
@@ -351,8 +351,8 @@ function App() {
                 <div className="desktop-app">
                   <div className="desktop-sidebar">
                     <div className="sidebar-brand">
-                      <img src="/Hisvex.png" alt="Hisvex" style={{ width: 28, height: 28, borderRadius: '50%', objectFit: 'cover', flexShrink: 0 }} />
-                      <span><span style={{ color: 'var(--violet)', fontWeight: 700 }}>His</span><span style={{ color: '#fff', fontWeight: 700 }}>vex</span></span>
+                      <img src="/Hisvex-icon.png" alt="Hisvex" style={{ width: 20, height: 30, objectFit: 'contain', flexShrink: 0 }} />
+                      <span><span style={{ color: 'var(--violet)', fontWeight: 700 }}>is</span><span style={{ color: '#fff', fontWeight: 700 }}>vex</span></span>
                     </div>
                     <div className="sidebar-section">Asosiy</div>
                     <div className="sidebar-nav">
@@ -738,8 +738,8 @@ function App() {
           <div className="foot-grid">
             <div className="foot-brand">
               <a href="/top" className="brand" style={{ gap: 10 }}>
-                <img src="/Hisvex.png" alt="Hisvex" style={{ width: 40, height: 40, borderRadius: '50%', objectFit: 'cover', display: 'block' }} />
-                <span><span style={{ color: '#8B5CF6', fontSize: 28, fontWeight: 700 }}>His</span><span style={{ color: '#FFF', fontSize: 28, fontWeight: 700 }}>vex</span></span>
+                <img src="/Hisvex-icon.png" alt="Hisvex" style={{ width: 30, height: 45, objectFit: 'contain', display: 'block' }} />
+                <span><span style={{ color: '#8B5CF6', fontSize: 28, fontWeight: 700 }}>is</span><span style={{ color: '#FFF', fontSize: 28, fontWeight: 700 }}>vex</span></span>
               </a>
               <p>Bar, kafe va do'konlar uchun premium hisob-kitob ilovasi. Oddiy, tez va ishonchli.</p>
               <a href="https://t.me/dilbek7011" target="_blank" className="tg-btn"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M22 3 2 10.5l5.5 2L17 6l-7 8.5V20l3-3.5 4 3z" /></svg>@dilbek7011</a>
