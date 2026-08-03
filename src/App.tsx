@@ -218,7 +218,7 @@ function App() {
       <header className="nav" id="nav">
         <div className="nav-inner">
           <a href="/top" className="brand" style={{ gap: 10 }}>
-            <img src="/logo.png" alt="Hisvex" style={{ width: 42, height: 42, objectFit: 'contain', display: 'block' }} />
+            <img src="/hisvex-logo-icon.png" alt="Hisvex" style={{ width: 52, height: 52, objectFit: 'contain', display: 'block', marginRight: -12, paddingTop: 5 }} />
             <span><span style={{ color: '#8B5CF6', fontSize: 28, fontWeight: 700 }}>is</span><span style={{ color: '#FFF', fontSize: 28, fontWeight: 700 }}>vex</span></span>
           </a>
           <nav className="nav-links">
