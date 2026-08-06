@@ -57,18 +57,18 @@ function TermsPage() {
 
       <header className="nav" id="nav">
         <div className="nav-inner">
-          <a href="/top" className="brand" style={{ gap: 10 }}>
+          <Link to="/top" className="brand" style={{ gap: 10 }}>
             <img src="/logo.png" alt="Hisvex" style={{ width: 36, height: 36, objectFit: 'contain', display: 'block' }} />
             <span><span style={{ color: '#8B5CF6', fontSize: 28, fontWeight: 700 }}>is</span><span style={{ color: '#FFF', fontSize: 28, fontWeight: 700 }}>vex</span></span>
-          </a>
+          </Link>
           <nav className="nav-links">
-            <a href="/imkoniyatlar">Imkoniyatlar</a><a href="/ekranlar">Ekranlar</a><a href="/narxlar">Narxlar</a><a href="/privacy">Privacy</a><a href="/faq">Savollar</a>
+            <Link to="/imkoniyatlar">Imkoniyatlar</Link><Link to="/ekranlar">Ekranlar</Link><Link to="/narxlar">Narxlar</Link><Link to="/privacy">Privacy</Link><Link to="/faq">Savollar</Link>
           </nav>
           <div className="nav-cta">
-            <a href="/privacy" className="btn btn-ghost">Privacy</a>
-            <a href="https://t.me/dilbek7011" target="_blank" className="btn btn-gold">Boshlash <span className="arr">→</span></a>
+            <Link to="/privacy" className="btn btn-ghost">Privacy</Link>
+            <a href="https://t.me/dilbek7011" target="_blank" rel="noopener noreferrer" className="btn btn-gold">Boshlash <span className="arr">→</span></a>
           </div>
-          <div className="burger" id="burger"><span></span><span></span><span></span></div>
+          <button type="button" className="burger" id="burger" aria-label="Menyu"><span></span><span></span><span></span></button>
         </div>
       </header>
 
@@ -141,7 +141,7 @@ function TermsPage() {
           <p>Biz ushbu shartlarni vaqti-vaqti bilan yangilashimiz mumkin. Muhim o'zgarishlar haqida Ilova yoki Telegram orqali xabar beriladi. Yangilanishdan keyin Ilovadan foydalanishda davom etish — yangi shartlarga rozilik hisoblanadi.</p>
 
           <h2 id="s8"><span className="n">08</span>Bog'lanish</h2>
-          <p>Savollar yoki murojaatlar uchun: Telegram <a href="https://t.me/dilbek7011" target="_blank">@dilbek7011</a>.</p>
+          <p>Savollar yoki murojaatlar uchun: Telegram <a href="https://t.me/dilbek7011" target="_blank" rel="noopener noreferrer">@dilbek7011</a>.</p>
 
           <div className="callout"><p>Ushbu hujjat <Link to="/privacy">Maxfiylik siyosati</Link> bilan birgalikda amal qiladi.</p></div>
         </div>

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { useLocation } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 
 const GH = 'https://github.com/dilb3k/hisvex-landing/releases/download/v1.0.2'
 const GH1 = 'https://github.com/dilb3k/hisvex-landing/releases/download/v1.0.2'
@@ -123,12 +123,14 @@ function App() {
       if (burgerMenu) {
         const isOpen = burgerMenu.style.display === 'flex'
         burgerMenu.style.display = isOpen ? 'none' : 'flex'
+        burger?.setAttribute('aria-expanded', String(!isOpen))
       }
     }
     burger?.addEventListener('click', burgerHandler)
 
     const linkCloseHandler = () => {
       if (burgerMenu) burgerMenu.style.display = 'none'
+      burger?.setAttribute('aria-expanded', 'false')
     }
     const navLinks = document.querySelectorAll<HTMLElement>('.nav-links a, #burger-menu a')
     navLinks.forEach(a => a.addEventListener('click', linkCloseHandler))
@@ -161,7 +163,10 @@ function App() {
 
     const qHandlers: Array<{ el: Element; fn: () => void }> = []
     document.querySelectorAll('.q-head').forEach(h => {
-      const fn = () => (h.parentElement as HTMLElement)?.classList.toggle('open')
+      const fn = () => {
+        const opened = (h.parentElement as HTMLElement)?.classList.toggle('open')
+        h.setAttribute('aria-expanded', String(!!opened))
+      }
       h.addEventListener('click', fn)
       qHandlers.push({ el: h, fn })
     })
@@ -217,26 +222,26 @@ function App() {
 
       <header className="nav" id="nav">
         <div className="nav-inner">
-          <a href="/top" className="brand" style={{ gap: 10 }}>
+          <Link to="/top" className="brand" style={{ gap: 10 }}>
             <img src="/hisvex-logo-icon.png" alt="Hisvex" style={{ width: 52, height: 52, objectFit: 'contain', display: 'block', marginRight: -12, paddingTop: 5 }} />
             <span><span style={{ color: '#8B5CF6', fontSize: 28, fontWeight: 700 }}>is</span><span style={{ color: '#FFF', fontSize: 28, fontWeight: 700 }}>vex</span></span>
-          </a>
+          </Link>
           <nav className="nav-links">
-            <a href="/imkoniyatlar">Imkoniyatlar</a><a href="/ekranlar">Ekranlar</a><a href="/narxlar">Narxlar</a><a href="/privacy">Privacy</a><a href="/faq">Savollar</a>
+            <Link to="/imkoniyatlar">Imkoniyatlar</Link><Link to="/ekranlar">Ekranlar</Link><Link to="/narxlar">Narxlar</Link><Link to="/privacy">Privacy</Link><Link to="/faq">Savollar</Link>
           </nav>
           <div className="nav-cta">
-            <a href="/privacy" className="btn btn-ghost">Privacy</a>
-            <a href="https://t.me/dilbek7011" target="_blank" className="btn btn-gold">Boshlash <span className="arr">→</span></a>
+            <Link to="/privacy" className="btn btn-ghost">Privacy</Link>
+            <a href="https://t.me/dilbek7011" target="_blank" rel="noopener noreferrer" className="btn btn-gold">Boshlash <span className="arr">→</span></a>
           </div>
-          <div className="burger" id="burger"><span></span><span></span><span></span></div>
+          <button type="button" className="burger" id="burger" aria-label="Menyu" aria-expanded="false" aria-controls="burger-menu"><span></span><span></span><span></span></button>
         </div>
         <div className="burger-menu" id="burger-menu">
-          <a href="/imkoniyatlar">Imkoniyatlar</a>
-          <a href="/ekranlar">Ekranlar</a>
-          <a href="/narxlar">Narxlar</a>
-          <a href="/privacy">Privacy</a>
-          <a href="/faq">Savollar</a>
-          <a href="https://t.me/dilbek7011" target="_blank" className="btn btn-gold" style={{ justifyContent: 'center', marginTop: 4 }}>Boshlash <span className="arr">→</span></a>
+          <Link to="/imkoniyatlar">Imkoniyatlar</Link>
+          <Link to="/ekranlar">Ekranlar</Link>
+          <Link to="/narxlar">Narxlar</Link>
+          <Link to="/privacy">Privacy</Link>
+          <Link to="/faq">Savollar</Link>
+          <a href="https://t.me/dilbek7011" target="_blank" rel="noopener noreferrer" className="btn btn-gold" style={{ justifyContent: 'center', marginTop: 4 }}>Boshlash <span className="arr">→</span></a>
         </div>
       </header>
 
@@ -251,7 +256,7 @@ function App() {
             <div className="hero-cta reveal d3">
               <a href="https://hisvex-web.vercel.app" target="_blank" rel="noopener noreferrer" className="btn btn-gold">Hoziroq boshlash <span className="arr">→</span></a>
               <a href="#download-section" onClick={(e) => { e.preventDefault(); document.getElementById('download-section')?.scrollIntoView({ behavior: 'smooth' }) }} className="btn btn-ghost">Yuklab olish <span className="arr">↓</span></a>
-              <a href="/ekranlar" className="btn btn-ghost">Ilovani ko'rish</a>
+              <Link to="/ekranlar" className="btn btn-ghost">Ilovani ko'rish</Link>
             </div>
             <div className="hero-stats reveal d4">
               <div className="hstat"><div className="n" data-count="1200" data-suffix="+">0</div><div className="l">Savdo nuqtasi</div></div>
@@ -658,7 +663,7 @@ function App() {
                 <li><svg viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" /></svg>Offline rejim</li>
                 <li className="off"><svg viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" /></svg>Statistika &amp; Reyting</li>
               </ul>
-              <a href="https://t.me/dilbek7011" target="_blank" className="btn btn-ghost">Boshlash</a>
+              <a href="https://t.me/dilbek7011" target="_blank" rel="noopener noreferrer" className="btn btn-ghost">Boshlash</a>
             </div>
             <div className="price reveal d2">
               <div className="pname">Bor</div><div className="pdesc">O'sib borayotgan do'konlar uchun.</div>
@@ -670,7 +675,7 @@ function App() {
                 <li><svg viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" /></svg>Offline sync</li>
                 <li className="off"><svg viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" /></svg>Cheksiz miqyos</li>
               </ul>
-              <a href="https://t.me/dilbek7011" target="_blank" className="btn btn-ghost">Tanlash</a>
+              <a href="https://t.me/dilbek7011" target="_blank" rel="noopener noreferrer" className="btn btn-ghost">Tanlash</a>
             </div>
             <div className="price feat reveal d3">
               <span className="tag">Ommabop</span><div className="pname">Pro</div><div className="pdesc">To'liq imkoniyatlar, cheksiz miqyos.</div>
@@ -682,7 +687,7 @@ function App() {
                 <li><svg viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" /></svg>Telegram hisobotlari</li>
                 <li><svg viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" /></svg>Ustuvor qo'llab-quvvatlash</li>
               </ul>
-              <a href="https://t.me/dilbek7011" target="_blank" className="btn btn-gold">Pro olish <span className="arr">→</span></a>
+              <a href="https://t.me/dilbek7011" target="_blank" rel="noopener noreferrer" className="btn btn-gold">Pro olish <span className="arr">→</span></a>
             </div>
           </div>
         </div>
@@ -710,11 +715,11 @@ function App() {
         <div className="wrap">
           <div className="sec-head reveal" style={{ textAlign: 'center', margin: '0 auto 50px' as any }}><span className="eyebrow"><span className="dot"></span>Savol-javob</span><h2 className="section-title">Tez-tez beriladigan savollar</h2></div>
           <div className="faq">
-            <div className="q reveal"><div className="q-head">Internet bo'lmasa ishlaydimi?<span className="pm">+</span></div><div className="q-body"><p>Ha. Hisvex offline-first ishlaydi — barcha mahsulot, savdo va ombor lokal saqlanadi. Internet tiklanganda avtomatik sinxronlanadi.</p></div></div>
-            <div className="q reveal"><div className="q-head">Ma'lumotlarim yo'qolib qoladimi?<span className="pm">+</span></div><div className="q-body"><p>Yo'q. Ma'lumotlar ham qurilmada, ham serverda saqlanadi. Telefon almashtirsangiz ham hisobingizga kirib, hammasini qaytarib olasiz.</p></div></div>
-            <div className="q reveal"><div className="q-head">Bir nechta qurilmada ishlata olamanmi?<span className="pm">+</span></div><div className="q-body"><p>Ha. Bitta hisob bilan bir nechta qurilmada sinxronlangan holda ishlashingiz mumkin.</p></div></div>
-            <div className="q reveal"><div className="q-head">Hisob-kitob qanchalik aniq?<span className="pm">+</span></div><div className="q-body"><p>Har bir sotilgan dona, narx va foyda bitta mantiq bo'yicha hisoblanadi — telefon va serverda bir xil natija. Anglashilmovchilik bo'lmaydi.</p></div></div>
-            <div className="q reveal"><div className="q-head">Qanday to'lov qilaman?<span className="pm">+</span></div><div className="q-body"><p>Tarif va to'lov uchun Telegram orqali bog'laning: <a href="https://t.me/dilbek7011" target="_blank" style={{ color: 'var(--gold)' }}>@dilbek7011</a>.</p></div></div>
+            <div className="q reveal"><button type="button" className="q-head" aria-expanded="false" aria-controls="faq-a-0">Internet bo'lmasa ishlaydimi?<span className="pm">+</span></button><div className="q-body" id="faq-a-0"><p>Ha. Hisvex offline-first ishlaydi — barcha mahsulot, savdo va ombor lokal saqlanadi. Internet tiklanganda avtomatik sinxronlanadi.</p></div></div>
+            <div className="q reveal"><button type="button" className="q-head" aria-expanded="false" aria-controls="faq-a-1">Ma'lumotlarim yo'qolib qoladimi?<span className="pm">+</span></button><div className="q-body" id="faq-a-1"><p>Yo'q. Ma'lumotlar ham qurilmada, ham serverda saqlanadi. Telefon almashtirsangiz ham hisobingizga kirib, hammasini qaytarib olasiz.</p></div></div>
+            <div className="q reveal"><button type="button" className="q-head" aria-expanded="false" aria-controls="faq-a-2">Bir nechta qurilmada ishlata olamanmi?<span className="pm">+</span></button><div className="q-body" id="faq-a-2"><p>Ha. Bitta hisob bilan bir nechta qurilmada sinxronlangan holda ishlashingiz mumkin.</p></div></div>
+            <div className="q reveal"><button type="button" className="q-head" aria-expanded="false" aria-controls="faq-a-3">Hisob-kitob qanchalik aniq?<span className="pm">+</span></button><div className="q-body" id="faq-a-3"><p>Har bir sotilgan dona, narx va foyda bitta mantiq bo'yicha hisoblanadi — telefon va serverda bir xil natija. Anglashilmovchilik bo'lmaydi.</p></div></div>
+            <div className="q reveal"><button type="button" className="q-head" aria-expanded="false" aria-controls="faq-a-4">Qanday to'lov qilaman?<span className="pm">+</span></button><div className="q-body" id="faq-a-4"><p>Tarif va to'lov uchun Telegram orqali bog'laning: <a href="https://t.me/dilbek7011" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--gold)' }}>@dilbek7011</a>.</p></div></div>
           </div>
         </div>
       </section>
@@ -727,7 +732,7 @@ function App() {
             <p className="lead">Hisvex bilan har bir so'mni nazoratga oling. Bugun o'rnating — ertaga farqini ko'ring.</p>
             <div style={{ display: 'flex', gap: 14, justifyContent: 'center', flexWrap: 'wrap' }}>
               <a href="https://hisvex-web.vercel.app" target="_blank" rel="noopener noreferrer" className="btn btn-gold">Hoziroq boshlash <span className="arr">→</span></a>
-              <a href="/imkoniyatlar" className="btn btn-ghost">Imkoniyatlarni ko'rish</a>
+              <Link to="/imkoniyatlar" className="btn btn-ghost">Imkoniyatlarni ko'rish</Link>
             </div>
           </div>
         </div>
@@ -737,16 +742,16 @@ function App() {
         <div className="wrap">
           <div className="foot-grid">
             <div className="foot-brand">
-              <a href="/top" className="brand" style={{ gap: 10 }}>
+              <Link to="/top" className="brand" style={{ gap: 10 }}>
                 <img src="/logo.png" alt="Hisvex" style={{ width: 36, height: 36, objectFit: 'contain', display: 'block' }} />
                 <span><span style={{ color: '#8B5CF6', fontSize: 28, fontWeight: 700 }}>is</span><span style={{ color: '#FFF', fontSize: 28, fontWeight: 700 }}>vex</span></span>
-              </a>
+              </Link>
               <p>Bar, kafe va do'konlar uchun premium hisob-kitob ilovasi. Oddiy, tez va ishonchli.</p>
-              <a href="https://t.me/dilbek7011" target="_blank" className="tg-btn"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M22 3 2 10.5l5.5 2L17 6l-7 8.5V20l3-3.5 4 3z" /></svg>@dilbek7011</a>
+              <a href="https://t.me/dilbek7011" target="_blank" rel="noopener noreferrer" className="tg-btn"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M22 3 2 10.5l5.5 2L17 6l-7 8.5V20l3-3.5 4 3z" /></svg>@dilbek7011</a>
             </div>
-            <div className="foot-col"><h5>Mahsulot</h5><a href="/imkoniyatlar">Imkoniyatlar</a><a href="/ekranlar">Ekranlar</a><a href="/narxlar">Narxlar</a><a href="/privacy">Privacy</a></div>
-            <div className="foot-col"><h5>Kompaniya</h5><a href="/faq">Savol-javob</a><a href="https://t.me/dilbek7011" target="_blank">Bog'lanish</a><a href="/top">Boshiga</a></div>
-            <div className="foot-col"><h5>Huquqiy</h5><a href="/terms">Foydalanish shartlari</a><a href="/privacy">Maxfiylik siyosati</a></div>
+            <div className="foot-col"><h5>Mahsulot</h5><Link to="/imkoniyatlar">Imkoniyatlar</Link><Link to="/ekranlar">Ekranlar</Link><Link to="/narxlar">Narxlar</Link><Link to="/privacy">Privacy</Link></div>
+            <div className="foot-col"><h5>Kompaniya</h5><Link to="/faq">Savol-javob</Link><a href="https://t.me/dilbek7011" target="_blank" rel="noopener noreferrer">Bog'lanish</a><Link to="/top">Boshiga</Link></div>
+            <div className="foot-col"><h5>Huquqiy</h5><Link to="/terms">Foydalanish shartlari</Link><Link to="/privacy">Maxfiylik siyosati</Link></div>
           </div>
           <div className="foot-bot">
             <span>© <span id="year"></span> Hisvex. Barcha huquqlar himoyalangan.</span>
