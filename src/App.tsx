@@ -1868,7 +1868,7 @@ function App() {
                 Kassir uchun cho'ntakda — telefon yoki planshetda oflayn
                 ishlaydi, aloqa tiklanganda avtomatik sinxronlanadi.
               </div>
-              <div className="platform-version">v1.0.0</div>
+              <div className="platform-version">v1.0.1</div>
               <a
                 href="https://expo.dev/accounts/hisvex/projects/hisvex/builds/e9188422-b986-4702-bd6b-5ea5eeea36d0"
                 target="_blank"
