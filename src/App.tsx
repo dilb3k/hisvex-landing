@@ -17,6 +17,13 @@ const getDesktopDownload = () => {
   return { href: `${GH1}/Hisvex-Setup-1.0.2.exe`, label: 'Windows', file: 'Hisvex-Setup-1.0.2.exe' }
 }
 
+function ArrowIcon() {
+  return <svg className="arr" viewBox="0 0 24 24" fill="none" style={{ width: 16, height: 16, flexShrink: 0 }}><path d="M5 12h13.5M13.5 6l6 6-6 6" stroke="currentColor" strokeWidth="2.3" strokeLinecap="round" strokeLinejoin="round" /></svg>
+}
+function DownloadArrowIcon() {
+  return <svg className="arr" viewBox="0 0 24 24" fill="none" style={{ width: 16, height: 16, flexShrink: 0 }}><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
+}
+
 const I = {
   s: '<svg viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/><path d="m20 20-3-3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>',
   lock: '<svg viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="9" rx="2" stroke="currentColor" stroke-width="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3" stroke="currentColor" stroke-width="2"/></svg>',
@@ -253,7 +260,7 @@ function App() {
           </nav>
           <div className="nav-cta">
             <Link to="/privacy" className="btn btn-ghost">Privacy</Link>
-            <a href="https://t.me/dilbek7011" target="_blank" rel="noopener noreferrer" className="btn btn-gold">Boshlash <span className="arr">→</span></a>
+            <a href="https://hisvex-web.vercel.app" target="_blank" rel="noopener noreferrer" className="btn btn-gold">Boshlash <ArrowIcon /></a>
           </div>
           <button type="button" className="burger" id="burger" aria-label="Menyu" aria-expanded="false" aria-controls="burger-menu"><span></span><span></span><span></span></button>
         </div>
@@ -263,7 +270,7 @@ function App() {
           <Link to="/narxlar">Narxlar</Link>
           <Link to="/privacy">Privacy</Link>
           <Link to="/faq">Savollar</Link>
-          <a href="https://t.me/dilbek7011" target="_blank" rel="noopener noreferrer" className="btn btn-gold" style={{ justifyContent: 'center', marginTop: 4 }}>Boshlash <span className="arr">→</span></a>
+          <a href="https://hisvex-web.vercel.app" target="_blank" rel="noopener noreferrer" className="btn btn-gold" style={{ justifyContent: 'center', marginTop: 4 }}>Boshlash <ArrowIcon /></a>
         </div>
       </header>
 
@@ -276,8 +283,8 @@ function App() {
             <h1 className="display reveal d1">Hisob-kitob <span className="it">mukammalligi</span> — cho'ntagingizda.</h1>
             <p className="lead reveal d2">Hisvex — mahsulot, ombor, savdo, qarzdor va statistikani <b style={{ color: 'var(--text)' }}>bitta ilovada</b> boshqaradi. Internetsiz ham ishlaydi, har bir so'm aniq hisoblanadi — hech qanday anglashilmovchiliksiz.</p>
             <div className="hero-cta reveal d3">
-              <a href="https://hisvex-web.vercel.app" target="_blank" rel="noopener noreferrer" className="btn btn-gold">Hoziroq boshlash <span className="arr">→</span></a>
-              <a href="#download-section" onClick={(e) => { e.preventDefault(); document.getElementById('download-section')?.scrollIntoView({ behavior: 'smooth' }) }} className="btn btn-ghost">Yuklab olish <span className="arr">↓</span></a>
+              <a href="https://hisvex-web.vercel.app" target="_blank" rel="noopener noreferrer" className="btn btn-gold">Hoziroq boshlash <ArrowIcon /></a>
+              <a href="#download-section" onClick={(e) => { e.preventDefault(); document.getElementById('download-section')?.scrollIntoView({ behavior: 'smooth' }) }} className="btn btn-ghost">Yuklab olish <DownloadArrowIcon /></a>
               <Link to="/ekranlar" className="btn btn-ghost">Ilovani ko'rish</Link>
             </div>
             <div className="hero-stats reveal d4">
@@ -632,7 +639,7 @@ function App() {
               <div className="platform-version">v1.0.2 · 121 MB</div>
               <a href={getMacDmg()} target="_blank" rel="noopener noreferrer" className="btn btn-gold platform-btn">
                 <svg viewBox="0 0 24 24" fill="none" style={{ width: 16, height: 16 }}><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                Yuklab olish <span className="arr">→</span>
+                Yuklab olish
               </a>
             </div>
             <div className="platform-card">
@@ -701,7 +708,7 @@ function App() {
                 <li><svg viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" /></svg>Offline rejim</li>
                 <li className="off"><svg viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" /></svg>Statistika &amp; Reyting</li>
               </ul>
-              <a href="https://t.me/dilbek7011" target="_blank" rel="noopener noreferrer" className="btn btn-ghost">Boshlash</a>
+              <a href="https://hisvex-web.vercel.app" target="_blank" rel="noopener noreferrer" className="btn btn-ghost">Boshlash</a>
             </div>
             <div className="price reveal d2">
               <div className="pname">Bor</div><div className="pdesc">O'sib borayotgan do'konlar uchun.</div>
@@ -725,7 +732,7 @@ function App() {
                 <li><svg viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" /></svg>Telegram hisobotlari</li>
                 <li><svg viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" /></svg>Ustuvor qo'llab-quvvatlash</li>
               </ul>
-              <a href="https://t.me/dilbek7011" target="_blank" rel="noopener noreferrer" className="btn btn-gold">Pro olish <span className="arr">→</span></a>
+              <a href="https://t.me/dilbek7011" target="_blank" rel="noopener noreferrer" className="btn btn-gold">Pro olish <ArrowIcon /></a>
             </div>
           </div>
         </div>
@@ -769,7 +776,7 @@ function App() {
             <h2 style={{ marginTop: 18 }}>Biznesingiz <span className="it" style={{ fontStyle: 'italic', color: 'var(--gold)' }}>aniq raqamlarni</span> kutmoqda</h2>
             <p className="lead">Hisvex bilan har bir so'mni nazoratga oling. Bugun o'rnating — ertaga farqini ko'ring.</p>
             <div style={{ display: 'flex', gap: 14, justifyContent: 'center', flexWrap: 'wrap' }}>
-              <a href="https://hisvex-web.vercel.app" target="_blank" rel="noopener noreferrer" className="btn btn-gold">Hoziroq boshlash <span className="arr">→</span></a>
+              <a href="https://hisvex-web.vercel.app" target="_blank" rel="noopener noreferrer" className="btn btn-gold">Hoziroq boshlash <ArrowIcon /></a>
               <Link to="/imkoniyatlar" className="btn btn-ghost">Imkoniyatlarni ko'rish</Link>
             </div>
           </div>
