@@ -1870,7 +1870,7 @@ function App() {
               </div>
               <div className="platform-version">v1.0.0</div>
               <a
-                href="https://expo.dev/accounts/hisvex/projects/hisvex/builds/c9e8607d-1b30-4a38-817d-45236e35894c"
+                href="https://expo.dev/accounts/hisvex/projects/hisvex/builds/e9188422-b986-4702-bd6b-5ea5eeea36d0"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn btn-ghost platform-btn"
