@@ -1,14 +1,14 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 
-const GH = "https://github.com/dilb3k/hisvex-landing/releases/download/v1.0.2";
-const GH1 = "https://github.com/dilb3k/hisvex-landing/releases/download/v1.0.2";
+const GH = "https://github.com/dilb3k/hisvex-landing/releases/download/v1.0.3";
+const GH1 = "https://github.com/dilb3k/hisvex-landing/releases/download/v1.0.3";
 
 const getMacDmg = () => {
   const u = navigator.userAgent;
   if (u.includes("Apple Silicon") || u.includes("arm64"))
-    return `${GH}/Hisvex-1.0.2-arm64.dmg`;
-  return `${GH}/Hisvex-1.0.2-x64.dmg`;
+    return `${GH}/Hisvex-1.0.3-arm64.dmg`;
+  return `${GH}/Hisvex-1.0.3-x64.dmg`;
 };
 
 const getDesktopDownload = () => {
@@ -17,14 +17,14 @@ const getDesktopDownload = () => {
     return { href: getMacDmg(), label: "macOS DMG", file: "Hisvex-mac.dmg" };
   if (u.includes("linux"))
     return {
-      href: `${GH}/Hisvex-1.0.2.AppImage`,
+      href: `${GH}/Hisvex-1.0.3.AppImage`,
       label: "Linux AppImage",
       file: "Hisvex.AppImage",
     };
   return {
-    href: `${GH1}/Hisvex-Setup-1.0.2.exe`,
+    href: `${GH1}/Hisvex-Setup-1.0.3.exe`,
     label: "Windows",
-    file: "Hisvex-Setup-1.0.2.exe",
+    file: "Hisvex-Setup-1.0.3.exe",
   };
 };
 
@@ -1748,9 +1748,9 @@ function App() {
                 Kassa kompyuterida tezkor ishlash uchun mo'ljallangan —
                 klaviatura yorliqlari va barcode skaner qo'llab-quvvatlanadi.
               </div>
-              <div className="platform-version">v1.0.2 · 105 MB</div>
+              <div className="platform-version">v1.0.3 · 108 MB</div>
               <a
-                href="https://github.com/dilb3k/hisvex-landing/releases/download/v1.0.2/Hisvex-Setup-1.0.2.exe"
+                href="https://github.com/dilb3k/hisvex-landing/releases/download/v1.0.3/Hisvex-Setup-1.0.3.exe"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn btn-gold platform-btn"
@@ -1788,7 +1788,7 @@ function App() {
                 Native ilova — Apple Silicon (M1 va undan keyingi) va Intel
                 Mac'larda bir xil tezlikda ishlaydi.
               </div>
-              <div className="platform-version">v1.0.2 · 121 MB</div>
+              <div className="platform-version">v1.0.3 · 130 MB</div>
               <a
                 href={getMacDmg()}
                 target="_blank"
@@ -1828,9 +1828,9 @@ function App() {
                 AppImage formatida — o'rnatishsiz, to'g'ridan-to'g'ri ishga
                 tushiring. Har qanday distributivda ishlaydi.
               </div>
-              <div className="platform-version">v1.0.2 · 129 MB</div>
+              <div className="platform-version">v1.0.3 · 134 MB</div>
               <a
-                href={`${GH}/Hisvex-1.0.2.AppImage`}
+                href={`${GH}/Hisvex-1.0.3.AppImage`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn btn-ghost platform-btn"
