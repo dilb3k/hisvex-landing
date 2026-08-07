@@ -69,6 +69,8 @@ header.nav{position:fixed;top:0;left:0;right:0;z-index:100;transition:.35s}
 .reveal{opacity:0;transform:translateY(28px);transition:opacity .9s cubic-bezier(.2,.8,.2,1),transform .9s cubic-bezier(.2,.8,.2,1)}
 .reveal.in{opacity:1;transform:none}
 .d1{transition-delay:.05s}.d2{transition-delay:.13s}.d3{transition-delay:.21s}.d4{transition-delay:.29s}
+.tilt3d{transform:perspective(1200px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));transition:transform .5s cubic-bezier(.2,.8,.2,1);will-change:transform}
+@media(prefers-reduced-motion:reduce){.tilt3d{transform:none!important;transition:none!important}}
 
 .hero-visual{position:relative;display:grid;place-items:center;min-height:600px;overflow:visible}
 .phone{width:300px;border-radius:44px;background:linear-gradient(160deg,#211b34,#0d0a18);padding:11px;border:1px solid rgba(255,255,255,.1);box-shadow:0 60px 120px -30px rgba(0,0,0,.85),inset 0 1px 0 rgba(255,255,255,.12);position:relative;flex-shrink:0}
@@ -201,7 +203,16 @@ header.nav{position:fixed;top:0;left:0;right:0;z-index:100;transition:.35s}
 .tap-hint{display:inline-flex;align-items:center;gap:8px;font-size:13px;color:var(--muted);margin-top:18px;font-weight:600}
 .tap-hint .k{width:24px;height:24px;border-radius:7px;border:1px solid var(--line);display:grid;place-items:center;color:var(--gold);background:var(--card)}
 
-.marquee{border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:22px 0;margin-top:60px;overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent)}
+.platform-strip{display:flex;align-items:center;justify-content:center;gap:16px 20px;flex-wrap:wrap;margin-top:48px;padding-top:26px;border-top:1px solid var(--line)}
+.ps-label{font-size:12.5px;color:var(--faint);font-weight:700;letter-spacing:.03em}
+.ps-icons{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.ps-chip{display:inline-flex;align-items:center;gap:7px;padding:8px 15px;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--muted);font-size:12.5px;font-weight:700;transition:.25s;backdrop-filter:blur(6px)}
+.ps-chip svg{width:15px;height:15px;flex-shrink:0}
+.ps-chip:hover{border-color:rgba(167,139,250,.45);color:var(--text);transform:translateY(-2px);box-shadow:0 10px 24px -14px rgba(139,92,246,.6)}
+.ps-sync{display:inline-flex;align-items:center;gap:6px;color:var(--emerald);font-weight:700;font-size:11.5px;margin-left:4px}
+.ps-sync i{width:6px;height:6px;border-radius:50%;background:var(--emerald);box-shadow:0 0 8px var(--emerald);animation:dotPulse 2s ease-in-out infinite}
+
+.marquee{border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:22px 0;margin-top:44px;overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent)}
 .marquee-track{display:flex;gap:60px;width:max-content;animation:scroll 30s linear infinite}
 .marquee:hover .marquee-track{animation-play-state:paused}
 .marquee span{font-family:var(--serif);font-size:22px;color:var(--faint);font-style:italic;display:flex;align-items:center;gap:60px;white-space:nowrap}
@@ -297,8 +308,7 @@ header.nav{position:fixed;top:0;left:0;right:0;z-index:100;transition:.35s}
 .desktop-glow{position:absolute;width:70%;height:80%;top:10%;left:15%;background:radial-gradient(ellipse,rgba(139,92,246,.25),rgba(109,40,217,.08) 50%,transparent 70%);filter:blur(60px);pointer-events:none;z-index:0;animation:glowPulse 6s ease-in-out infinite alternate}
 @keyframes glowPulse{0%{opacity:.6;transform:scale(1)}100%{opacity:1;transform:scale(1.08)}}
 
-.desktop-monitor{position:relative;width:100%;max-width:920px;z-index:1;transform:rotateX(2deg);transform-origin:bottom center;transition:transform .6s cubic-bezier(.2,.8,.2,1)}
-.desktop-monitor:hover{transform:rotateX(0deg)}
+.desktop-monitor{position:relative;width:100%;max-width:920px;z-index:1;transform:perspective(1600px) rotateX(calc(2deg + var(--rx,0deg))) rotateY(var(--ry,0deg));transform-origin:center center;transition:transform .5s cubic-bezier(.2,.8,.2,1);will-change:transform}
 
 .monitor-bezel{background:linear-gradient(180deg,#1e1a30 0%,#16122a 60%,#12101f 100%);border-radius:16px 16px 0 0;padding:10px 16px 8px;border:1px solid rgba(255,255,255,.07);border-bottom:none;position:relative;display:flex;align-items:center;justify-content:space-between}
 .monitor-camera{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);position:relative}
@@ -434,6 +444,7 @@ header.nav{position:fixed;top:0;left:0;right:0;z-index:100;transition:.35s}
 .platform-icon.linux{background:rgba(52,211,153,.08);border-color:rgba(52,211,153,.18);color:var(--emerald)}
 .platform-card h4{font-family:var(--serif);font-size:20px;font-weight:700;margin-bottom:3px}
 .platform-card p{color:var(--muted);font-size:13px;margin-bottom:4px}
+.platform-note{color:var(--faint);font-size:12px;line-height:1.55;min-height:36px;margin-bottom:12px}
 .platform-version{font-size:10.5px;color:var(--faint);font-weight:600;margin-bottom:18px;font-family:monospace}
 .platform-btn{width:100%;justify-content:center;font-size:13px;padding:11px 20px;border-radius:12px}
 
@@ -615,6 +626,10 @@ footer{border-top:1px solid var(--line);padding:64px 0 36px;margin-top:90px}
   .hero-badge div{font-size:11px}
   .hb1{left:0px;top:16px}
   .hb2{right:0px;bottom:60px}
+  .platform-strip{margin-top:24px;padding-top:18px;gap:10px 12px}
+  .ps-label{font-size:11px;width:100%;text-align:center}
+  .ps-chip{padding:6px 11px;font-size:11px;gap:5px}
+  .ps-chip svg{width:13px;height:13px}
   .marquee{padding:12px 0;margin-top:30px}
   .marquee-track{gap:24px}
   .marquee span{font-size:14px;gap:24px}

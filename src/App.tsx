@@ -171,6 +171,27 @@ function App() {
       qHandlers.push({ el: h, fn })
     })
 
+    const tiltCleanups: Array<() => void> = []
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    if (!reduceMotion) {
+      document.querySelectorAll<HTMLElement>('.tilt3d').forEach(el => {
+        const ax = +(el.dataset.tiltX ?? 8)
+        const ay = +(el.dataset.tiltY ?? 12)
+        const move = (e: Event) => {
+          const me = e as MouseEvent
+          const r = el.getBoundingClientRect()
+          const px = (me.clientX - r.left) / r.width - 0.5
+          const py = (me.clientY - r.top) / r.height - 0.5
+          el.style.setProperty('--rx', (py * -ax).toFixed(2) + 'deg')
+          el.style.setProperty('--ry', (px * ay).toFixed(2) + 'deg')
+        }
+        const leave = () => { el.style.setProperty('--rx', '0deg'); el.style.setProperty('--ry', '0deg') }
+        el.addEventListener('mousemove', move)
+        el.addEventListener('mouseleave', leave)
+        tiltCleanups.push(() => { el.removeEventListener('mousemove', move); el.removeEventListener('mouseleave', leave) })
+      })
+    }
+
     const fCardCleanups: Array<() => void> = []
     document.querySelectorAll('.f-card').forEach(c => {
       const handler = (e: Event) => {
@@ -212,6 +233,7 @@ function App() {
       cio.disconnect()
       qHandlers.forEach(({ el, fn }) => el.removeEventListener('click', fn))
       fCardCleanups.forEach(fn => fn())
+      tiltCleanups.forEach(fn => fn())
     }
   }, [pathname])
 
@@ -264,11 +286,22 @@ function App() {
               <div className="hstat"><div className="n">24<span className="u">/</span>7</div><div className="l">Offline rejim</div></div>
             </div>
           </div>
-          <div className="hero-visual reveal d3">
+          <div className="hero-visual reveal d3 tilt3d" data-tilt-x="7" data-tilt-y="11">
             <div className="phone-back"></div>
             <div className="hero-badge hb1"><span className="ic" style={{ background: 'rgba(52,211,153,.15)' }}><svg viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="#34D399" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" /></svg></span><div>Kunlik foyda<small>+18% bugun</small></div></div>
             <div className="hero-badge hb2"><span className="ic" style={{ background: 'rgba(230,192,121,.15)' }}><svg viewBox="0 0 24 24" fill="none"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" stroke="#E6C079" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg></span><div>Bugungi tushum<small>4 250 000 so'm</small></div></div>
             <div className="phone float"><div className="notch"></div><div className="screen"><AppPhone idx={0} /></div></div>
+          </div>
+        </div>
+        <div className="platform-strip reveal d4">
+          <span className="ps-label">Bitta hisob — barcha qurilmalarda:</span>
+          <div className="ps-icons">
+            <span className="ps-chip"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.9-1.801" /></svg>Windows</span>
+            <span className="ps-chip"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z" /></svg>macOS</span>
+            <span className="ps-chip"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.504 0c-.155 0-.315.008-.48.021-4.226.333-3.105 4.807-3.17 6.298-.076 1.092-.3 1.953-1.05 3.02-.885 1.051-2.127 2.75-2.716 4.521-.278.832-.41 1.684-.287 2.489a.424.424 0 00-.11.135c-.26.268-.45.6-.663.839-.199.199-.485.267-.797.4-.313.136-.658.269-.864.68-.09.189-.136.394-.132.602 0 .199.027.4.055.536.058.399.116.728.04.97-.249.68-.28 1.145-.106 1.484.174.334.535.47.94.601.81.2 1.91.135 2.774.6.926.466 1.866.67 2.616.47.526-.116.97-.464 1.208-.946.587-.003 1.23-.269 2.26-.334.699-.058 1.574.267 2.577.2.025.134.063.198.114.333l.003.003c.391.778 1.113 1.368 1.884 1.43.199.009.4.058.576.135.445.2.79.536.927 1.008.136.464.064.945-.132 1.354-.199.415-.53.772-.893.97-.099.047-.199.08-.3.115-.57.134-1.146.048-1.656-.136-.36-.135-.67-.333-.864-.535-.136-.135-.3-.334-.365-.469l-.003-.003c-.332-.536-.866-.867-1.356-.971a.37.37 0 00-.137-.024c-1.356 0-2.12 1.48-2.17 1.579-.07.093-.67.867-1.895.867-.178 0-.36-.012-.543-.035a5.56 5.56 0 01-.388.106c-.642.134-1.37.047-1.98-.398-.61-.447-.982-1.16-.982-1.864 0-.267.038-.534.113-.795.148-.408.442-.771.722-1.06.13-.135.263-.267.365-.334.136-.09.225-.18.262-.267.022-.135-.013-.267-.072-.4-.136-.334-.52-.535-.916-.601-.396-.067-.807-.003-1.133.2-.326.2-.57.536-.774.901-.203.364-.36.762-.565.961-.204.2-.527.334-.858.267a1.78 1.78 0 01-.666-.335c-.199-.2-.332-.535-.466-.867-.134-.332-.268-.664-.535-.864-.267-.2-.6-.267-.93-.134-.334.135-.6.4-.865.667-.265.267-.53.534-.864.667-.333.134-.73.134-1.062-.067-.334-.2-.565-.601-.732-1.068-.167-.466-.265-.998-.132-1.531.133-.534.398-1.069.797-1.535.4-.466.866-.8 1.265-.934.4-.134.665-.334.798-.667.133-.334.133-.735-.067-1.135-.2-.4-.532-.734-.93-.934-.399-.2-.864-.267-1.265-.067-.4.2-.665.6-.865 1.068-.2.466-.332.999-.332 1.466 0 .134.012.267.023.4.014.134.025.267.025.334 0 .267-.133.467-.333.601-.2.134-.465.2-.73.134-.267-.067-.466-.268-.6-.535-.133-.267-.2-.534-.267-.867-.066-.334-.132-.668-.132-1.002 0-.334.067-.668.2-1.002.133-.334.266-.667.465-.867.2-.2.4-.334.666-.4.267-.068.532-.068.8-.003.265.065.465.2.664.4.2.2.333.4.466.667.133.267.2.534.332.868.134.333.267.667.267 1.067 0 .4-.067.734-.2 1.001-.133.267-.2.534-.333.734-.133.2-.2.4-.4.534-.2.134-.4.2-.665.2h-.003c-.266 0-.532-.066-.73-.267-.2-.2-.333-.467-.4-.734-.068-.267-.068-.534-.068-.801 0-.267.068-.534.133-.801.066-.267.2-.534.333-.734.132-.2.265-.4.4-.534.132-.133.265-.2.4-.267.132-.066.265-.066.4-.066.133 0 .266.066.4.133.134.067.266.2.333.334.067.133.132.267.132.4 0 .133-.065.267-.132.4-.067.133-.133.267-.266.334-.133.066-.2.133-.333.133h-.002c-.133 0-.266-.067-.332-.133-.067-.067-.133-.2-.2-.334-.066-.133-.132-.267-.132-.4 0-.133.066-.267.132-.4.067-.133.133-.2.2-.267.067-.066.133-.133.266-.133.133 0 .2.067.266.133.067.067.133.134.133.267 0 .067-.067.134-.133.134-.066.066-.133.133-.266.133-.133 0-.2-.067-.266-.133-.067-.067-.067-.134-.067-.267 0-.133.067-.2.133-.267.067-.066.133-.066.2-.066z" /></svg>Linux</span>
+            <span className="ps-chip"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.6 9.48l1.84-3.18c.16-.31.04-.69-.27-.85-.31-.16-.69-.04-.85.27l-1.87 3.23c-1.15-.48-2.44-.75-3.8-.75s-2.65.27-3.8.75L6.98 5.72c-.16-.31-.54-.43-.85-.27-.31.16-.43.55-.27.85L7.7 9.48C4.48 11.24 2.28 14.38 2 18h20c-.28-3.62-2.48-6.76-5.7-8.52zM7 15.25a1.25 1.25 0 110-2.5 1.25 1.25 0 010 2.5zm10 0a1.25 1.25 0 110-2.5 1.25 1.25 0 010 2.5z" /></svg>Android</span>
+            <span className="ps-chip"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" /><path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z" stroke="currentColor" strokeWidth="2" /></svg>Veb-brauzer</span>
+            <span className="ps-sync"><i></i>Real vaqtda sinxron</span>
           </div>
         </div>
         <div className="marquee"><div className="marquee-track">
@@ -345,7 +378,7 @@ function App() {
 
           <div className="desktop-showcase reveal">
             <div className="desktop-glow"></div>
-            <div className="desktop-monitor">
+            <div className="desktop-monitor tilt3d" data-tilt-x="3" data-tilt-y="5">
               <div className="monitor-bezel">
                 <div className="monitor-camera"><div className="cam-dot"></div></div>
                 <div className="monitor-controls">
@@ -581,6 +614,7 @@ function App() {
               </div>
               <h4>Windows</h4>
               <p>Windows 10 va 11 uchun</p>
+              <div className="platform-note">Kassa kompyuterida tezkor ishlash uchun mo'ljallangan — klaviatura yorliqlari va barcode skaner qo'llab-quvvatlanadi.</div>
               <div className="platform-version">v1.0.2 · 105 MB</div>
               <a href="https://github.com/dilb3k/hisvex-landing/releases/download/v1.0.2/Hisvex-Setup-1.0.2.exe" target="_blank" rel="noopener noreferrer" className="btn btn-gold platform-btn">
                 <svg viewBox="0 0 24 24" fill="none" style={{ width: 16, height: 16 }}><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
@@ -594,6 +628,7 @@ function App() {
               </div>
               <h4>macOS</h4>
               <p>Intel va Apple Silicon</p>
+              <div className="platform-note">Native ilova — Apple Silicon (M1 va undan keyingi) va Intel Mac'larda bir xil tezlikda ishlaydi.</div>
               <div className="platform-version">v1.0.2 · 121 MB</div>
               <a href={getMacDmg()} target="_blank" rel="noopener noreferrer" className="btn btn-gold platform-btn">
                 <svg viewBox="0 0 24 24" fill="none" style={{ width: 16, height: 16 }}><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
@@ -607,6 +642,7 @@ function App() {
               </div>
               <h4>Linux</h4>
               <p>Ubuntu, Fedora, Debian</p>
+              <div className="platform-note">AppImage formatida — o'rnatishsiz, to'g'ridan-to'g'ri ishga tushiring. Har qanday distributivda ishlaydi.</div>
               <div className="platform-version">v1.0.2 · 129 MB</div>
               <a href={`${GH}/Hisvex-1.0.2.AppImage`} target="_blank" rel="noopener noreferrer" className="btn btn-ghost platform-btn">
                 <svg viewBox="0 0 24 24" fill="none" style={{ width: 16, height: 16 }}><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
@@ -620,6 +656,7 @@ function App() {
               </div>
               <h4>Android</h4>
               <p>APK faylni to'g'ridan-to'g'ri yuklab oling</p>
+              <div className="platform-note">Kassir uchun cho'ntakda — telefon yoki planshetda oflayn ishlaydi, aloqa tiklanganda avtomatik sinxronlanadi.</div>
               <div className="platform-version">v1.0.0</div>
               <a href="https://expo.dev/accounts/hisvex/projects/hisvex/builds/c9e8607d-1b30-4a38-817d-45236e35894c" target="_blank" rel="noopener noreferrer" className="btn btn-ghost platform-btn">
                 <svg viewBox="0 0 24 24" fill="none" style={{ width: 16, height: 16 }}><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
@@ -633,6 +670,7 @@ function App() {
               </div>
               <h4>Web versiya</h4>
               <p>Brauzer orqali ishlating</p>
+              <div className="platform-note">O'rnatishsiz — istalgan Chrome, Safari yoki Edge brauzeridan hisobingizga kiring va boshqaring.</div>
               <a href="https://hisvex-web.vercel.app" target="_blank" rel="noopener noreferrer" className="btn btn-gold platform-btn">
                 <svg viewBox="0 0 24 24" fill="none" style={{ width: 16, height: 16 }}><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
                 Ochish
