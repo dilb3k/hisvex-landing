@@ -22,9 +22,9 @@ const getDesktopDownload = () => {
       file: "Hisvex.AppImage",
     };
   return {
-    href: `${GH1}/Hisvex-Setup-1.0.3.exe`,
+    href: `${GH1}/Hisvex-Setup-1.0.4.exe`,
     label: "Windows",
-    file: "Hisvex-Setup-1.0.3.exe",
+    file: "Hisvex-Setup-1.0.4.exe",
   };
 };
 
@@ -1748,9 +1748,9 @@ function App() {
                 Kassa kompyuterida tezkor ishlash uchun mo'ljallangan —
                 klaviatura yorliqlari va barcode skaner qo'llab-quvvatlanadi.
               </div>
-              <div className="platform-version">v1.0.3 · 108 MB</div>
+              <div className="platform-version">v1.0.4 · 108 MB</div>
               <a
-                href="https://github.com/dilb3k/hisvex-landing/releases/download/v1.0.3/Hisvex-Setup-1.0.3.exe"
+                href="https://github.com/dilb3k/hisvex-landing/releases/download/v1.0.3/Hisvex-Setup-1.0.4.exe"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn btn-gold platform-btn"
