@@ -2,7 +2,14 @@ import { useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 
 const GH = "https://github.com/dilb3k/hisvex-landing/releases/download/v1.0.3";
-const GH1 = "https://github.com/dilb3k/hisvex-landing/releases/download/v1.0.3";
+// Windows build only — mac/Linux artifacts haven't been rebuilt since v1.0.3,
+// so their links stay on GH above. Kept as its own tagged release (rather
+// than dropping the .exe into the v1.0.3 release the way v1.0.4's build was)
+// so the in-app update checker's `releases/latest` tag_name actually reads
+// "v1.0.5" — UpdateAvailableModal.tsx compares that tag against the running
+// app version, and a v1.0.4 exe living inside a "v1.0.3" release meant a
+// v1.0.3 install could never see it as newer and never prompted to update.
+const GH1 = "https://github.com/dilb3k/hisvex-landing/releases/download/v1.0.5";
 
 const getMacDmg = () => {
   const u = navigator.userAgent;
@@ -22,9 +29,9 @@ const getDesktopDownload = () => {
       file: "Hisvex.AppImage",
     };
   return {
-    href: `${GH1}/Hisvex-Setup-1.0.4.exe`,
+    href: `${GH1}/Hisvex-Setup-1.0.5.exe`,
     label: "Windows",
-    file: "Hisvex-Setup-1.0.4.exe",
+    file: "Hisvex-Setup-1.0.5.exe",
   };
 };
 
@@ -1748,9 +1755,9 @@ function App() {
                 Kassa kompyuterida tezkor ishlash uchun mo'ljallangan —
                 klaviatura yorliqlari va barcode skaner qo'llab-quvvatlanadi.
               </div>
-              <div className="platform-version">v1.0.4 · 108 MB</div>
+              <div className="platform-version">v1.0.5 · 108 MB</div>
               <a
-                href="https://github.com/dilb3k/hisvex-landing/releases/download/v1.0.3/Hisvex-Setup-1.0.4.exe"
+                href="https://github.com/dilb3k/hisvex-landing/releases/download/v1.0.5/Hisvex-Setup-1.0.5.exe"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn btn-gold platform-btn"
