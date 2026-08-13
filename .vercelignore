@@ -1,0 +1,12 @@
+# Large desktop/mobile build artifacts. Nothing in src/App.tsx links to
+# /downloads/ anymore (all download buttons point at GitHub Releases — see
+# the GH/GH1 constants), so this directory doesn't need to ship with the
+# deployment at all. Left un-added to .gitignore/git rather than deleted —
+# these are pre-existing local files, not something to clean up unasked.
+public/downloads/
+dist/downloads/
+# Vercel builds remotely from source; the local build output (already
+# git-ignored) has no reason to be part of the upload either — it pulled in
+# the same public/downloads/ copy vite copies verbatim on build, which is
+# what pushed the upload past the 100MB single-file limit in the first place.
+dist/
