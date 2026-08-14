@@ -412,15 +412,37 @@ function App() {
       document.querySelectorAll<HTMLElement>(".tilt3d").forEach((el) => {
         const ax = +(el.dataset.tiltX ?? 8);
         const ay = +(el.dataset.tiltY ?? 12);
-        const move = (e: Event) => {
-          const me = e as MouseEvent;
-          const r = el.getBoundingClientRect();
-          const px = (me.clientX - r.left) / r.width - 0.5;
-          const py = (me.clientY - r.top) / r.height - 0.5;
+        // getBoundingClientRect() forces a synchronous layout, and mousemove
+        // can fire well over 60x/sec — doing that plus two style writes on
+        // every single event caused visible jank (worse on Windows, whose
+        // Chromium builds don't absorb layout thrashing as gracefully as
+        // macOS). Cache the rect per hover session and coalesce writes to
+        // one per animation frame instead of one per raw event.
+        let rect: DOMRect | null = null;
+        let raf = 0;
+        let pendingX = 0;
+        let pendingY = 0;
+        const apply = () => {
+          raf = 0;
+          if (!rect) return;
+          const px = pendingX / rect.width - 0.5;
+          const py = pendingY / rect.height - 0.5;
           el.style.setProperty("--rx", (py * -ax).toFixed(2) + "deg");
           el.style.setProperty("--ry", (px * ay).toFixed(2) + "deg");
         };
+        const move = (e: Event) => {
+          const me = e as MouseEvent;
+          if (!rect) rect = el.getBoundingClientRect();
+          pendingX = me.clientX - rect.left;
+          pendingY = me.clientY - rect.top;
+          if (!raf) raf = requestAnimationFrame(apply);
+        };
         const leave = () => {
+          rect = null;
+          if (raf) {
+            cancelAnimationFrame(raf);
+            raf = 0;
+          }
           el.style.setProperty("--rx", "0deg");
           el.style.setProperty("--ry", "0deg");
         };
@@ -429,23 +451,40 @@ function App() {
         tiltCleanups.push(() => {
           el.removeEventListener("mousemove", move);
           el.removeEventListener("mouseleave", leave);
+          if (raf) cancelAnimationFrame(raf);
         });
       });
     }
 
     const fCardCleanups: Array<() => void> = [];
     document.querySelectorAll(".f-card").forEach((c) => {
+      const card = c as HTMLElement;
+      let rect: DOMRect | null = null;
+      let raf = 0;
+      let pendingX = 0;
+      let pendingY = 0;
+      const apply = () => {
+        raf = 0;
+        card.style.setProperty("--mx", pendingX + "px");
+        card.style.setProperty("--my", pendingY + "px");
+      };
       const handler = (e: Event) => {
         const me = e as MouseEvent;
-        const r = c.getBoundingClientRect();
-        (c as HTMLElement).style.setProperty(
-          "--mx",
-          me.clientX - r.left + "px",
-        );
-        (c as HTMLElement).style.setProperty("--my", me.clientY - r.top + "px");
+        if (!rect) rect = card.getBoundingClientRect();
+        pendingX = me.clientX - rect.left;
+        pendingY = me.clientY - rect.top;
+        if (!raf) raf = requestAnimationFrame(apply);
       };
-      c.addEventListener("mousemove", handler);
-      fCardCleanups.push(() => c.removeEventListener("mousemove", handler));
+      const leave = () => {
+        rect = null;
+      };
+      card.addEventListener("mousemove", handler);
+      card.addEventListener("mouseleave", leave);
+      fCardCleanups.push(() => {
+        card.removeEventListener("mousemove", handler);
+        card.removeEventListener("mouseleave", leave);
+        if (raf) cancelAnimationFrame(raf);
+      });
     });
 
     document.getElementById("year")!.textContent = String(
@@ -486,9 +525,9 @@ function App() {
   return (
     <>
       <div className="bg-fx">
-        <div className="blob b1"></div>
-        <div className="blob b2"></div>
-        <div className="blob b3"></div>
+        <div className="blob-wrap b1"><div className="blob b1"></div></div>
+        <div className="blob-wrap b2"><div className="blob b2"></div></div>
+        <div className="blob-wrap b3"><div className="blob b3"></div></div>
       </div>
       <div className="grain"></div>
 
@@ -1101,7 +1140,7 @@ function App() {
           </div>
 
           <div className="desktop-showcase reveal">
-            <div className="desktop-glow"></div>
+            <div className="desktop-glow-wrap"><div className="desktop-glow"></div></div>
             <div
               className="desktop-monitor tilt3d"
               data-tilt-x="3"

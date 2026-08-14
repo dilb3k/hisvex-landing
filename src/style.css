@@ -14,10 +14,20 @@ body{font-family:var(--sans);background:var(--ink);color:var(--text);line-height
 a{color:inherit;text-decoration:none}img{max-width:100%;display:block}
 
 .bg-fx{position:fixed;inset:0;z-index:-2;overflow:hidden;pointer-events:none}
-.blob{position:absolute;border-radius:50%;filter:blur(90px);opacity:.5;mix-blend-mode:screen}
-.blob.b1{width:46vw;height:46vw;left:-12vw;top:-10vw;background:radial-gradient(circle,#7C3AED,transparent 65%);animation:drift1 22s ease-in-out infinite}
-.blob.b2{width:40vw;height:40vw;right:-10vw;top:8vw;background:radial-gradient(circle,#C99B4E,transparent 62%);opacity:.28;animation:drift2 26s ease-in-out infinite}
-.blob.b3{width:50vw;height:50vw;left:20vw;bottom:-24vw;background:radial-gradient(circle,#6D28D9,transparent 65%);opacity:.35;animation:drift3 30s ease-in-out infinite}
+/* Animating transform and filter:blur on the SAME element forces the
+   browser to re-run the (expensive) blur every frame instead of just
+   moving a cached bitmap — Windows Chromium's compositor absorbs this far
+   worse than macOS, which is why these blobs felt heavy specifically
+   there. Splitting into an animating wrapper + a static blurred child lets
+   the blur rasterize once and the wrapper's transform stay compositor-only. */
+.blob-wrap{position:absolute;will-change:transform}
+.blob-wrap.b1{width:46vw;height:46vw;left:-12vw;top:-10vw;animation:drift1 22s ease-in-out infinite}
+.blob-wrap.b2{width:40vw;height:40vw;right:-10vw;top:8vw;animation:drift2 26s ease-in-out infinite}
+.blob-wrap.b3{width:50vw;height:50vw;left:20vw;bottom:-24vw;animation:drift3 30s ease-in-out infinite}
+.blob{width:100%;height:100%;border-radius:50%;filter:blur(90px);mix-blend-mode:screen}
+.blob.b1{opacity:.5;background:radial-gradient(circle,#7C3AED,transparent 65%)}
+.blob.b2{opacity:.28;background:radial-gradient(circle,#C99B4E,transparent 62%)}
+.blob.b3{opacity:.35;background:radial-gradient(circle,#6D28D9,transparent 65%)}
 @keyframes drift1{50%{transform:translate(8vw,6vw) scale(1.1)}}
 @keyframes drift2{50%{transform:translate(-6vw,8vw) scale(1.15)}}
 @keyframes drift3{50%{transform:translate(4vw,-6vw) scale(1.08)}}
@@ -305,7 +315,10 @@ header.nav{position:fixed;top:0;left:0;right:0;z-index:100;transition:.35s}
 
 /* ===== Desktop Download Section — Premium Redesign ===== */
 .desktop-showcase{display:flex;justify-content:center;margin-bottom:54px;perspective:1400px;position:relative}
-.desktop-glow{position:absolute;width:70%;height:80%;top:10%;left:15%;background:radial-gradient(ellipse,rgba(139,92,246,.25),rgba(109,40,217,.08) 50%,transparent 70%);filter:blur(60px);pointer-events:none;z-index:0;animation:glowPulse 6s ease-in-out infinite alternate}
+/* Same wrapper/static-blur split as .blob above: the wrapper animates
+   opacity+scale (compositor-only), the child holds the static blur. */
+.desktop-glow-wrap{position:absolute;width:70%;height:80%;top:10%;left:15%;pointer-events:none;z-index:0;animation:glowPulse 6s ease-in-out infinite alternate;will-change:transform,opacity}
+.desktop-glow{width:100%;height:100%;background:radial-gradient(ellipse,rgba(139,92,246,.25),rgba(109,40,217,.08) 50%,transparent 70%);filter:blur(60px)}
 @keyframes glowPulse{0%{opacity:.6;transform:scale(1)}100%{opacity:1;transform:scale(1.08)}}
 
 .desktop-monitor{position:relative;width:100%;max-width:920px;z-index:1;transform:perspective(1600px) rotateX(calc(2deg + var(--rx,0deg))) rotateY(var(--ry,0deg));transform-origin:center center;transition:transform .5s cubic-bezier(.2,.8,.2,1);will-change:transform}
@@ -492,7 +505,8 @@ footer{border-top:1px solid var(--line);padding:64px 0 36px;margin-top:90px}
   .phone-back{display:none}
   .phone.tilt{transform:none}
   .desktop-showcase{margin-bottom:40px}
-  .desktop-glow{width:90%;left:5%;filter:blur(40px)}
+  .desktop-glow-wrap{width:90%;left:5%}
+  .desktop-glow{filter:blur(40px)}
   .desktop-monitor{transform:none;max-width:100%}
   .desktop-monitor:hover{transform:none}
   .desktop-sidebar{width:160px}
@@ -634,7 +648,7 @@ footer{border-top:1px solid var(--line);padding:64px 0 36px;margin-top:90px}
   .marquee-track{gap:24px}
   .marquee span{font-size:14px;gap:24px}
   .desktop-showcase{margin-bottom:30px}
-  .desktop-glow{display:none}
+  .desktop-glow-wrap{display:none}
   .desktop-monitor{transform:none}
   .desktop-monitor:hover{transform:none}
   .desktop-sidebar{display:none}
