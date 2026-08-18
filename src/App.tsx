@@ -11,6 +11,21 @@ const GH = "https://github.com/dilb3k/hisvex-landing/releases/download/v1.0.3";
 // v1.0.3 install could never see it as newer and never prompted to update.
 const GH1 = "https://github.com/dilb3k/hisvex-landing/releases/download/v1.0.5";
 
+// Android/mobile has no GitHub-releases equivalent to check against (unlike
+// desktop above), so the in-app update prompt (media-project-mobile's
+// UpdateAvailableModal.tsx) instead reads MOBILE_LATEST_VERSION /
+// MOBILE_DOWNLOAD_URL from the backend (comp-bar-server/backend/src/config/env.ts).
+// These two constants are what a human sees on this page, and they are NOT
+// wired to that backend value — bumping a mobile release means updating
+// THREE places by hand, or this page silently shows a stale version/link
+// while the app itself is already prompting users to update to a newer one:
+//   1. media-project-mobile/app.json + package.json "version"
+//   2. MOBILE_LATEST_VERSION / MOBILE_DOWNLOAD_URL env vars on the backend host
+//   3. MOBILE_APK_VERSION / MOBILE_APK_URL right here
+const MOBILE_APK_VERSION = "1.0.1";
+const MOBILE_APK_URL =
+  "https://expo.dev/accounts/hisvex/projects/hisvex/builds/e9188422-b986-4702-bd6b-5ea5eeea36d0";
+
 const getMacDmg = () => {
   const u = navigator.userAgent;
   if (u.includes("Apple Silicon") || u.includes("arm64"))
@@ -1914,9 +1929,9 @@ function App() {
                 Kassir uchun cho'ntakda — telefon yoki planshetda oflayn
                 ishlaydi, aloqa tiklanganda avtomatik sinxronlanadi.
               </div>
-              <div className="platform-version">v1.0.1</div>
+              <div className="platform-version">v{MOBILE_APK_VERSION}</div>
               <a
-                href="https://expo.dev/accounts/hisvex/projects/hisvex/builds/e9188422-b986-4702-bd6b-5ea5eeea36d0"
+                href={MOBILE_APK_URL}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn btn-ghost platform-btn"

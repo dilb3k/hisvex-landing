@@ -28,3 +28,5 @@ public/downloads/Hisvex-1.0.0-arm64.dmg
 public/downloads/Hisvex-1.0.0-x64.dmg
 public/downloads/Hisvex-1.0.0.AppImage
 public/downloads/Hisvex-Setup-1.0.1.exe
+.vercel
+.env*
