@@ -10,6 +10,12 @@ const GH = "https://github.com/dilb3k/hisvex-landing/releases/download/v1.0.3";
 // app version, and a v1.0.4 exe living inside a "v1.0.3" release meant a
 // v1.0.3 install could never see it as newer and never prompted to update.
 const GH1 = "https://github.com/dilb3k/hisvex-landing/releases/download/v1.0.5";
+// macOS build only — Windows/Linux artifacts haven't been rebuilt since
+// v1.0.5/v1.0.3 respectively, so their links stay on GH1/GH above. Same
+// "own tagged release" reasoning as GH1's comment: releases/latest now
+// correctly reads "v1.0.6", and installs on any platform get prompted to
+// update even though only the mac dmg actually changed in this release.
+const GH2 = "https://github.com/dilb3k/hisvex-landing/releases/download/v1.0.6";
 
 // Android/mobile has no GitHub-releases equivalent to check against (unlike
 // desktop above), so the in-app update prompt (media-project-mobile's
@@ -29,8 +35,8 @@ const MOBILE_APK_URL =
 const getMacDmg = () => {
   const u = navigator.userAgent;
   if (u.includes("Apple Silicon") || u.includes("arm64"))
-    return `${GH}/Hisvex-1.0.3-arm64.dmg`;
-  return `${GH}/Hisvex-1.0.3-x64.dmg`;
+    return `${GH2}/Hisvex-1.0.6-arm64.dmg`;
+  return `${GH2}/Hisvex-1.0.6-x64.dmg`;
 };
 
 const getDesktopDownload = () => {
@@ -1849,7 +1855,7 @@ function App() {
                 Native ilova — Apple Silicon (M1 va undan keyingi) va Intel
                 Mac'larda bir xil tezlikda ishlaydi.
               </div>
-              <div className="platform-version">v1.0.3 · 130 MB</div>
+              <div className="platform-version">v1.0.6 · 129 MB</div>
               <a
                 href={getMacDmg()}
                 target="_blank"
