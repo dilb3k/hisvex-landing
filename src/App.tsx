@@ -1811,7 +1811,7 @@ function App() {
               </div>
               <div className="platform-version">v1.0.5 · 108 MB</div>
               <a
-                href="https://github.com/dilb3k/hisvex-landing/releases/download/v1.0.5/Hisvex-Setup-1.0.5.exe"
+                href={`${GH1}/Hisvex-Setup-1.0.5.exe`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn btn-gold platform-btn"
