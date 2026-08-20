@@ -10,7 +10,7 @@ const GH = "https://github.com/dilb3k/hisvex-landing/releases/download/v1.0.3";
 // see itself as outdated and never prompts to update. Bump this (and its
 // referenced filenames below) together whenever mac/Windows are rebuilt;
 // Linux keeps pointing at GH above until it's rebuilt too.
-const GH2 = "https://github.com/dilb3k/hisvex-landing/releases/download/v1.0.6";
+const GH2 = "https://github.com/dilb3k/hisvex-landing/releases/download/v1.0.7";
 
 // Android/mobile has no GitHub-releases equivalent to check against (unlike
 // desktop above), so the in-app update prompt (media-project-mobile's
@@ -30,8 +30,8 @@ const MOBILE_APK_URL =
 const getMacDmg = () => {
   const u = navigator.userAgent;
   if (u.includes("Apple Silicon") || u.includes("arm64"))
-    return `${GH2}/Hisvex-1.0.6-arm64.dmg`;
-  return `${GH2}/Hisvex-1.0.6-x64.dmg`;
+    return `${GH2}/Hisvex-1.0.7-arm64.dmg`;
+  return `${GH2}/Hisvex-1.0.7-x64.dmg`;
 };
 
 const getDesktopDownload = () => {
@@ -45,9 +45,9 @@ const getDesktopDownload = () => {
       file: "Hisvex.AppImage",
     };
   return {
-    href: `${GH2}/Hisvex-Setup-1.0.6.exe`,
+    href: `${GH2}/Hisvex-Setup-1.0.7.exe`,
     label: "Windows",
-    file: "Hisvex-Setup-1.0.6.exe",
+    file: "Hisvex-Setup-1.0.7.exe",
   };
 };
 
@@ -1810,9 +1810,9 @@ function App() {
                 Kassa kompyuterida tezkor ishlash uchun mo'ljallangan —
                 klaviatura yorliqlari va barcode skaner qo'llab-quvvatlanadi.
               </div>
-              <div className="platform-version">v1.0.6 · 108 MB</div>
+              <div className="platform-version">v1.0.7 · 108 MB</div>
               <a
-                href={`${GH2}/Hisvex-Setup-1.0.6.exe`}
+                href={`${GH2}/Hisvex-Setup-1.0.7.exe`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn btn-gold platform-btn"
@@ -1850,7 +1850,7 @@ function App() {
                 Native ilova — Apple Silicon (M1 va undan keyingi) va Intel
                 Mac'larda bir xil tezlikda ishlaydi.
               </div>
-              <div className="platform-version">v1.0.6 · 129 MB</div>
+              <div className="platform-version">v1.0.7 · 129 MB</div>
               <a
                 href={getMacDmg()}
                 target="_blank"
