@@ -1,6 +1,14 @@
 import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 
+function ArrowIcon() {
+  return (
+    <svg className="arr" viewBox="0 0 24 24" fill="none" style={{ width: 16, height: 16, flexShrink: 0 }}>
+      <path d="M5 12h13.5M13.5 6l6 6-6 6" stroke="currentColor" strokeWidth="2.3" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  )
+}
+
 function TermsPage() {
   useEffect(() => {
     document.getElementById('y')!.textContent = String(new Date().getFullYear())
@@ -10,18 +18,22 @@ function TermsPage() {
     addEventListener('scroll', scrollHandler)
 
     const burger = document.getElementById('burger')
-    burger?.addEventListener('click', () => {
-      const l = document.querySelector<HTMLElement>('.nav-links')
-      if (l) l.style.cssText = 'display:flex;position:absolute;top:70px;left:16px;right:16px;flex-direction:column;background:rgba(14,11,26,.97);border:1px solid var(--line);border-radius:20px;padding:20px;gap:16px;backdrop-filter:blur(16px)'
-    })
-    document.querySelectorAll('.nav-links a').forEach(a =>
-      a.addEventListener('click', () => {
-        if (innerWidth <= 980) {
-          const l = document.querySelector<HTMLElement>('.nav-links')
-          if (l) l.style.display = 'none'
-        }
-      })
-    )
+    const burgerMenu = document.getElementById('burger-menu')
+    const burgerHandler = () => {
+      if (burgerMenu) {
+        const isOpen = burgerMenu.style.display === 'flex'
+        burgerMenu.style.display = isOpen ? 'none' : 'flex'
+        burger?.setAttribute('aria-expanded', String(!isOpen))
+      }
+    }
+    burger?.addEventListener('click', burgerHandler)
+
+    const linkCloseHandler = () => {
+      if (burgerMenu) burgerMenu.style.display = 'none'
+      burger?.setAttribute('aria-expanded', 'false')
+    }
+    const navLinks = document.querySelectorAll<HTMLElement>('.nav-links a, #burger-menu a')
+    navLinks.forEach(a => a.addEventListener('click', linkCloseHandler))
 
     const handleClick = (e: MouseEvent) => {
       const a = (e.target as HTMLElement).closest<HTMLAnchorElement>('a[href^="#"]')
@@ -46,6 +58,8 @@ function TermsPage() {
     document.addEventListener('click', handleClick)
     return () => {
       removeEventListener('scroll', scrollHandler)
+      burger?.removeEventListener('click', burgerHandler)
+      navLinks.forEach(a => a.removeEventListener('click', linkCloseHandler))
       document.removeEventListener('click', handleClick)
     }
   }, [])
@@ -58,7 +72,7 @@ function TermsPage() {
       <header className="nav" id="nav">
         <div className="nav-inner">
           <Link to="/top" className="brand" style={{ gap: 10 }}>
-            <img src="/logo.png" alt="Hisvex" style={{ width: 36, height: 36, objectFit: 'contain', display: 'block' }} />
+            <img src="/hisvex-logo-icon.png" alt="Hisvex" style={{ width: 52, height: 52, objectFit: 'contain', display: 'block', marginRight: -12, paddingTop: 5 }} />
             <span><span style={{ color: '#8B5CF6', fontSize: 28, fontWeight: 700 }}>is</span><span style={{ color: '#FFF', fontSize: 28, fontWeight: 700 }}>vex</span></span>
           </Link>
           <nav className="nav-links">
@@ -66,9 +80,17 @@ function TermsPage() {
           </nav>
           <div className="nav-cta">
             <Link to="/privacy" className="btn btn-ghost">Privacy</Link>
-            <a href="https://t.me/dilbek7011" target="_blank" rel="noopener noreferrer" className="btn btn-gold">Boshlash <span className="arr">→</span></a>
+            <a href="https://hisvex-web.vercel.app" target="_blank" rel="noopener noreferrer" className="btn btn-gold">Boshlash <ArrowIcon /></a>
           </div>
-          <button type="button" className="burger" id="burger" aria-label="Menyu"><span></span><span></span><span></span></button>
+          <button type="button" className="burger" id="burger" aria-label="Menyu" aria-expanded="false" aria-controls="burger-menu"><span></span><span></span><span></span></button>
+        </div>
+        <div className="burger-menu" id="burger-menu">
+          <Link to="/imkoniyatlar">Imkoniyatlar</Link>
+          <Link to="/ekranlar">Ekranlar</Link>
+          <Link to="/narxlar">Narxlar</Link>
+          <Link to="/privacy">Privacy</Link>
+          <Link to="/faq">Savollar</Link>
+          <a href="https://hisvex-web.vercel.app" target="_blank" rel="noopener noreferrer" className="btn btn-gold" style={{ justifyContent: 'center', marginTop: 4 }}>Boshlash <ArrowIcon /></a>
         </div>
       </header>
 
