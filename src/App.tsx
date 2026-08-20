@@ -1,20 +1,15 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 
+// Linux build only, unchanged since v1.0.3 — its link stays on GH below.
 const GH = "https://github.com/dilb3k/hisvex-landing/releases/download/v1.0.3";
-// Windows build only — mac/Linux artifacts haven't been rebuilt since v1.0.3,
-// so their links stay on GH above. Kept as its own tagged release (rather
-// than dropping the .exe into the v1.0.3 release the way v1.0.4's build was)
-// so the in-app update checker's `releases/latest` tag_name actually reads
-// "v1.0.5" — UpdateAvailableModal.tsx compares that tag against the running
-// app version, and a v1.0.4 exe living inside a "v1.0.3" release meant a
-// v1.0.3 install could never see it as newer and never prompted to update.
-const GH1 = "https://github.com/dilb3k/hisvex-landing/releases/download/v1.0.5";
-// macOS build only — Windows/Linux artifacts haven't been rebuilt since
-// v1.0.5/v1.0.3 respectively, so their links stay on GH1/GH above. Same
-// "own tagged release" reasoning as GH1's comment: releases/latest now
-// correctly reads "v1.0.6", and installs on any platform get prompted to
-// update even though only the mac dmg actually changed in this release.
+// macOS + Windows, both rebuilt together for this release. The in-app update
+// checker (UpdateAvailableModal.tsx) compares its own platform's running
+// version against `releases/latest`'s tag_name — so whichever tag is newest
+// here must actually contain that platform's asset, or an install can never
+// see itself as outdated and never prompts to update. Bump this (and its
+// referenced filenames below) together whenever mac/Windows are rebuilt;
+// Linux keeps pointing at GH above until it's rebuilt too.
 const GH2 = "https://github.com/dilb3k/hisvex-landing/releases/download/v1.0.6";
 
 // Android/mobile has no GitHub-releases equivalent to check against (unlike
@@ -50,9 +45,9 @@ const getDesktopDownload = () => {
       file: "Hisvex.AppImage",
     };
   return {
-    href: `${GH1}/Hisvex-Setup-1.0.5.exe`,
+    href: `${GH2}/Hisvex-Setup-1.0.6.exe`,
     label: "Windows",
-    file: "Hisvex-Setup-1.0.5.exe",
+    file: "Hisvex-Setup-1.0.6.exe",
   };
 };
 
@@ -1815,9 +1810,9 @@ function App() {
                 Kassa kompyuterida tezkor ishlash uchun mo'ljallangan —
                 klaviatura yorliqlari va barcode skaner qo'llab-quvvatlanadi.
               </div>
-              <div className="platform-version">v1.0.5 · 108 MB</div>
+              <div className="platform-version">v1.0.6 · 108 MB</div>
               <a
-                href={`${GH1}/Hisvex-Setup-1.0.5.exe`}
+                href={`${GH2}/Hisvex-Setup-1.0.6.exe`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn btn-gold platform-btn"
