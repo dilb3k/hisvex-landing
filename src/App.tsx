@@ -24,8 +24,15 @@ const GH2 = "https://github.com/dilb3k/hisvex-landing/releases/download/v1.0.7";
 //   2. MOBILE_LATEST_VERSION / MOBILE_DOWNLOAD_URL env vars on the backend host
 //   3. MOBILE_APK_VERSION / MOBILE_APK_URL right here
 const MOBILE_APK_VERSION = "1.0.2";
+// Deliberately the direct .apk artifact URL, NOT the Expo build page
+// (https://expo.dev/.../builds/{id}) — that page requires an extra manual
+// click to actually start the download. This one is served as
+// application/octet-stream, so the browser downloads it immediately on
+// click, matching the desktop Setup.exe/.dmg buttons' behavior. Get it from
+// the build's "Application Archive URL" (`eas build:view <id>`), not the
+// build page URL, on every mobile release.
 const MOBILE_APK_URL =
-  "https://expo.dev/accounts/hisvex/projects/hisvex/builds/20f048fa-503a-4772-9bd2-3175d91b8886";
+  "https://expo.dev/artifacts/eas/J9npXXWLUynVZJM8MzMOJ9Rn-pKDzLoI7NcIoetCob0.apk";
 
 const getMacDmg = () => {
   const u = navigator.userAgent;
