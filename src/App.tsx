@@ -23,9 +23,9 @@ const GH2 = "https://github.com/dilb3k/hisvex-landing/releases/download/v1.0.7";
 //   1. media-project-mobile/app.json + package.json "version"
 //   2. MOBILE_LATEST_VERSION / MOBILE_DOWNLOAD_URL env vars on the backend host
 //   3. MOBILE_APK_VERSION / MOBILE_APK_URL right here
-const MOBILE_APK_VERSION = "1.0.1";
+const MOBILE_APK_VERSION = "1.0.2";
 const MOBILE_APK_URL =
-  "https://expo.dev/accounts/hisvex/projects/hisvex/builds/e9188422-b986-4702-bd6b-5ea5eeea36d0";
+  "https://expo.dev/accounts/hisvex/projects/hisvex/builds/20f048fa-503a-4772-9bd2-3175d91b8886";
 
 const getMacDmg = () => {
   const u = navigator.userAgent;
