@@ -875,8 +875,9 @@ function App() {
                 </div>
                 <h3>Mahsulotlar boshqaruvi</h3>
                 <p>
-                  Rasm, narx, qoldiq va barcode bilan cheksiz mahsulot. Bir
-                  tegishda tahrirlash va qayta to'ldirish.
+                  Rasm, narx, qoldiq va barcode bilan cheksiz mahsulot. Dona
+                  yoki kilogramm — og'irlik bilan sotiladiganlar uchun 1.5 kg
+                  kabi kasr miqdor. Bir tegishda tahrirlash va to'ldirish.
                 </p>
               </div>
               <div className="big-metric">
@@ -950,6 +951,8 @@ function App() {
               <h3>Tezkor savdo</h3>
               <p>
                 Savatga qo'shing, barcode skaner qiling va bir tegishda soting.
+                Mijoz bilan kelishsangiz — narxni o'zgartiring yoki butun
+                savatga chegirma bering.
               </p>
             </div>
             <div className="f-card span2 reveal d3">
