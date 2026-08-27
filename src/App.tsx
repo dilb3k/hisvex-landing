@@ -17,17 +17,44 @@ const DESKTOP_FALLBACK = "1.2.2";
 const desktopAsset = (version: string, file: string) =>
   `https://github.com/${DESKTOP_REPO}/releases/download/v${version}/${file}`;
 
-// Android has no GitHub-releases equivalent to resolve against, so these stay
-// manual: bump them whenever a new APK is built. The in-app mobile update
-// prompt reads MOBILE_LATEST_VERSION / MOBILE_DOWNLOAD_URL from the backend
-// (comp-bar-server/backend/src/config/env.ts) instead — these two constants
-// are only what a human sees on this page.
-const MOBILE_APK_VERSION = "1.0.3";
-// Deliberately the direct .apk artifact URL, NOT the Expo build page, which
-// needs an extra click to actually start the download. Take it from the
-// build's "Application Archive URL" (`eas build:view <id>`).
-const MOBILE_APK_URL =
-  "https://expo.dev/artifacts/eas/OXdSYNmSRwWSgTaXUxDJgOf9APsEuzmVKhfpMxtnhA8.apk";
+// Android resolves the same way as desktop. It used to be a hardcoded Expo
+// artifact URL, which has two problems: the URL changes with every build, so
+// the page silently kept serving 1.0.3, and the media-project-mobile repo is
+// private, so its release assets 404 for anyone who is not signed in. The APK
+// is therefore published to a dedicated public releases repo.
+//
+// The in-app update prompt reads MOBILE_LATEST_VERSION / MOBILE_DOWNLOAD_URL
+// from the backend (comp-bar-server/backend/src/config/env.ts) — that is a
+// separate switch, and it has to be bumped too.
+const MOBILE_REPO = "dilb3k/hisvex-mobile";
+const MOBILE_RELEASES_API = `https://api.github.com/repos/${MOBILE_REPO}/releases/latest`;
+const MOBILE_FALLBACK = "1.1.0";
+
+const mobileApk = (version: string) =>
+  `https://github.com/${MOBILE_REPO}/releases/download/v${version}/Hisvex-${version}.apk`;
+
+/**
+ * Latest published version of a GitHub repo, or `fallback` if it cannot be
+ * read (offline, rate limit, no release yet). Never throws and never leaves
+ * the page without a download link — the fallback is always a real tag.
+ */
+const useLatestRelease = (api: string, fallback: string) => {
+  const [version, setVersion] = useState(fallback);
+  useEffect(() => {
+    let cancelled = false;
+    fetch(api, { headers: { Accept: "application/vnd.github+json" } })
+      .then((r) => (r.ok ? r.json() : null))
+      .then((j) => {
+        const tag = String(j?.tag_name || "").replace(/^v/i, "");
+        if (tag && !cancelled) setVersion(tag);
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+  }, [api]);
+  return version;
+};
 
 const getMacDmg = (v: string) => {
   const u = navigator.userAgent;
@@ -343,20 +370,10 @@ function AppPhone({ idx: pi }: { idx: number }) {
 
 function App() {
   const { pathname } = useLocation();
-  // Resolved from the latest hisvex-desktop release so a new tag needs no
-  // edit here — the previous hardcoded links silently kept serving 1.0.7.
-  const [desktopVersion, setDesktopVersion] = useState(DESKTOP_FALLBACK);
-  useEffect(() => {
-    let cancelled = false;
-    fetch(DESKTOP_RELEASES_API, { headers: { Accept: "application/vnd.github+json" } })
-      .then((r) => (r.ok ? r.json() : null))
-      .then((j) => {
-        const tag = String(j?.tag_name || "").replace(/^v/i, "");
-        if (tag && !cancelled) setDesktopVersion(tag);
-      })
-      .catch(() => {});
-    return () => { cancelled = true; };
-  }, []);
+  // Resolved from the latest release so a new tag needs no edit here — the
+  // previous hardcoded links silently kept serving 1.0.7 and 1.0.3.
+  const desktopVersion = useLatestRelease(DESKTOP_RELEASES_API, DESKTOP_FALLBACK);
+  const mobileVersion = useLatestRelease(MOBILE_RELEASES_API, MOBILE_FALLBACK);
 
   const [dur, setDur] = useState(1);
   const cleanupRefs = useRef<Array<() => void>>([]);
@@ -1950,9 +1967,9 @@ function App() {
                 Kassir uchun cho'ntakda — telefon yoki planshetda oflayn
                 ishlaydi, aloqa tiklanganda avtomatik sinxronlanadi.
               </div>
-              <div className="platform-version">v{MOBILE_APK_VERSION}</div>
+              <div className="platform-version">v{mobileVersion}</div>
               <a
-                href={MOBILE_APK_URL}
+                href={mobileApk(mobileVersion)}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn btn-ghost platform-btn"
