@@ -1,60 +1,55 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 
-// Linux build only, unchanged since v1.0.3 — its link stays on GH below.
-const GH = "https://github.com/dilb3k/hisvex-landing/releases/download/v1.0.3";
-// macOS + Windows, both rebuilt together for this release. The in-app update
-// checker (UpdateAvailableModal.tsx) compares its own platform's running
-// version against `releases/latest`'s tag_name — so whichever tag is newest
-// here must actually contain that platform's asset, or an install can never
-// see itself as outdated and never prompts to update. Bump this (and its
-// referenced filenames below) together whenever mac/Windows are rebuilt;
-// Linux keeps pointing at GH above until it's rebuilt too.
-const GH2 = "https://github.com/dilb3k/hisvex-landing/releases/download/v1.0.7";
+// Desktop installers are published by hisvex-desktop's release workflow
+// (.github/workflows/release.yml) on every `v*` tag — NOT by this repo. These
+// links used to point at hisvex-landing's own releases and were pinned to
+// v1.0.3 / v1.0.7, so every desktop release after that was invisible: the
+// page kept serving 1.0.7 while 1.2.x sat published elsewhere.
+//
+// The version is resolved at runtime from the latest release rather than
+// hardcoded, so a new tag is picked up with no edit here. DESKTOP_FALLBACK is
+// only used if that request fails (offline, GitHub rate limit).
+const DESKTOP_REPO = "dilb3k/hisvex-desktop";
+const DESKTOP_RELEASES_API = `https://api.github.com/repos/${DESKTOP_REPO}/releases/latest`;
+const DESKTOP_FALLBACK = "1.2.2";
 
-// Android/mobile has no GitHub-releases equivalent to check against (unlike
-// desktop above), so the in-app update prompt (media-project-mobile's
-// UpdateAvailableModal.tsx) instead reads MOBILE_LATEST_VERSION /
-// MOBILE_DOWNLOAD_URL from the backend (comp-bar-server/backend/src/config/env.ts).
-// These two constants are what a human sees on this page, and they are NOT
-// wired to that backend value — bumping a mobile release means updating
-// THREE places by hand, or this page silently shows a stale version/link
-// while the app itself is already prompting users to update to a newer one:
-//   1. media-project-mobile/app.json + package.json "version"
-//   2. MOBILE_LATEST_VERSION / MOBILE_DOWNLOAD_URL env vars on the backend host
-//   3. MOBILE_APK_VERSION / MOBILE_APK_URL right here
+const desktopAsset = (version: string, file: string) =>
+  `https://github.com/${DESKTOP_REPO}/releases/download/v${version}/${file}`;
+
+// Android has no GitHub-releases equivalent to resolve against, so these stay
+// manual: bump them whenever a new APK is built. The in-app mobile update
+// prompt reads MOBILE_LATEST_VERSION / MOBILE_DOWNLOAD_URL from the backend
+// (comp-bar-server/backend/src/config/env.ts) instead — these two constants
+// are only what a human sees on this page.
 const MOBILE_APK_VERSION = "1.0.3";
-// Deliberately the direct .apk artifact URL, NOT the Expo build page
-// (https://expo.dev/.../builds/{id}) — that page requires an extra manual
-// click to actually start the download. This one is served as
-// application/octet-stream, so the browser downloads it immediately on
-// click, matching the desktop Setup.exe/.dmg buttons' behavior. Get it from
-// the build's "Application Archive URL" (`eas build:view <id>`), not the
-// build page URL, on every mobile release.
+// Deliberately the direct .apk artifact URL, NOT the Expo build page, which
+// needs an extra click to actually start the download. Take it from the
+// build's "Application Archive URL" (`eas build:view <id>`).
 const MOBILE_APK_URL =
   "https://expo.dev/artifacts/eas/OXdSYNmSRwWSgTaXUxDJgOf9APsEuzmVKhfpMxtnhA8.apk";
 
-const getMacDmg = () => {
+const getMacDmg = (v: string) => {
   const u = navigator.userAgent;
   if (u.includes("Apple Silicon") || u.includes("arm64"))
-    return `${GH2}/Hisvex-1.0.7-arm64.dmg`;
-  return `${GH2}/Hisvex-1.0.7-x64.dmg`;
+    return desktopAsset(v, `Hisvex-${v}-arm64.dmg`);
+  return desktopAsset(v, `Hisvex-${v}-x64.dmg`);
 };
 
-const getDesktopDownload = () => {
+const getDesktopDownload = (v: string) => {
   const u = navigator.userAgent.toLowerCase();
   if (u.includes("mac"))
-    return { href: getMacDmg(), label: "macOS DMG", file: "Hisvex-mac.dmg" };
+    return { href: getMacDmg(v), label: "macOS DMG", file: `Hisvex-${v}.dmg` };
   if (u.includes("linux"))
     return {
-      href: `${GH}/Hisvex-1.0.3.AppImage`,
+      href: desktopAsset(v, `Hisvex-${v}.AppImage`),
       label: "Linux AppImage",
-      file: "Hisvex.AppImage",
+      file: `Hisvex-${v}.AppImage`,
     };
   return {
-    href: `${GH2}/Hisvex-Setup-1.0.7.exe`,
+    href: desktopAsset(v, `Hisvex-Setup-${v}.exe`),
     label: "Windows",
-    file: "Hisvex-Setup-1.0.7.exe",
+    file: `Hisvex-Setup-${v}.exe`,
   };
 };
 
@@ -348,6 +343,21 @@ function AppPhone({ idx: pi }: { idx: number }) {
 
 function App() {
   const { pathname } = useLocation();
+  // Resolved from the latest hisvex-desktop release so a new tag needs no
+  // edit here — the previous hardcoded links silently kept serving 1.0.7.
+  const [desktopVersion, setDesktopVersion] = useState(DESKTOP_FALLBACK);
+  useEffect(() => {
+    let cancelled = false;
+    fetch(DESKTOP_RELEASES_API, { headers: { Accept: "application/vnd.github+json" } })
+      .then((r) => (r.ok ? r.json() : null))
+      .then((j) => {
+        const tag = String(j?.tag_name || "").replace(/^v/i, "");
+        if (tag && !cancelled) setDesktopVersion(tag);
+      })
+      .catch(() => {});
+    return () => { cancelled = true; };
+  }, []);
+
   const [dur, setDur] = useState(1);
   const cleanupRefs = useRef<Array<() => void>>([]);
 
@@ -1820,9 +1830,9 @@ function App() {
                 Kassa kompyuterida tezkor ishlash uchun mo'ljallangan —
                 klaviatura yorliqlari va barcode skaner qo'llab-quvvatlanadi.
               </div>
-              <div className="platform-version">v1.0.7 · 108 MB</div>
+              <div className="platform-version">v{desktopVersion}</div>
               <a
-                href={`${GH2}/Hisvex-Setup-1.0.7.exe`}
+                href={desktopAsset(desktopVersion, `Hisvex-Setup-${desktopVersion}.exe`)}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn btn-gold platform-btn"
@@ -1860,9 +1870,9 @@ function App() {
                 Native ilova — Apple Silicon (M1 va undan keyingi) va Intel
                 Mac'larda bir xil tezlikda ishlaydi.
               </div>
-              <div className="platform-version">v1.0.7 · 129 MB</div>
+              <div className="platform-version">v{desktopVersion}</div>
               <a
-                href={getMacDmg()}
+                href={getMacDmg(desktopVersion)}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn btn-gold platform-btn"
@@ -1900,9 +1910,9 @@ function App() {
                 AppImage formatida — o'rnatishsiz, to'g'ridan-to'g'ri ishga
                 tushiring. Har qanday distributivda ishlaydi.
               </div>
-              <div className="platform-version">v1.0.3 · 134 MB</div>
+              <div className="platform-version">v{desktopVersion}</div>
               <a
-                href={`${GH}/Hisvex-1.0.3.AppImage`}
+                href={desktopAsset(desktopVersion, `Hisvex-${desktopVersion}.AppImage`)}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn btn-ghost platform-btn"
