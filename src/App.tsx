@@ -12,7 +12,7 @@ import { Link, useLocation } from "react-router-dom";
 // only used if that request fails (offline, GitHub rate limit).
 const DESKTOP_REPO = "dilb3k/hisvex-desktop";
 const DESKTOP_RELEASES_API = `https://api.github.com/repos/${DESKTOP_REPO}/releases/latest`;
-const DESKTOP_FALLBACK = "1.2.4";
+const DESKTOP_FALLBACK = "1.2.5";
 
 const desktopAsset = (version: string, file: string) =>
   `https://github.com/${DESKTOP_REPO}/releases/download/v${version}/${file}`;
