@@ -7,11 +7,16 @@ import { Link, useLocation } from "react-router-dom";
 // v1.0.3 / v1.0.7, so every desktop release after that was invisible: the
 // page kept serving 1.0.7 while 1.2.x sat published elsewhere.
 //
-// The version is resolved at runtime from the latest release rather than
-// hardcoded, so a new tag is picked up with no edit here. DESKTOP_FALLBACK is
-// only used if that request fails (offline, GitHub rate limit).
+// Versions are resolved at runtime so a new tag needs no edit here — but NOT
+// from GitHub directly any more. Unauthenticated GitHub calls are capped at 60
+// per hour per visitor IP; past that cap it answers 403 and this page fell
+// back to the constants below, which is how a published v1.2.5 could still
+// read as an older version for a real visitor while looking correct to whoever
+// tested it. The backend does the lookup once every ten minutes from one IP
+// and hands back both the version and the actual asset URLs.
+const VERSION_API = "https://hisvex-api.onrender.com/api/meta/app-version";
+
 const DESKTOP_REPO = "dilb3k/hisvex-desktop";
-const DESKTOP_RELEASES_API = `https://api.github.com/repos/${DESKTOP_REPO}/releases/latest`;
 const DESKTOP_FALLBACK = "1.2.5";
 
 const desktopAsset = (version: string, file: string) =>
@@ -22,59 +27,95 @@ const desktopAsset = (version: string, file: string) =>
 // the page silently kept serving 1.0.3, and the media-project-mobile repo is
 // private, so its release assets 404 for anyone who is not signed in. The APK
 // is therefore published to a dedicated public releases repo.
-//
-// The in-app update prompt reads MOBILE_LATEST_VERSION / MOBILE_DOWNLOAD_URL
-// from the backend (comp-bar-server/backend/src/config/env.ts) — that is a
-// separate switch, and it has to be bumped too.
 const MOBILE_REPO = "dilb3k/hisvex-mobile";
-const MOBILE_RELEASES_API = `https://api.github.com/repos/${MOBILE_REPO}/releases/latest`;
 const MOBILE_FALLBACK = "1.1.0";
 
 const mobileApk = (version: string) =>
   `https://github.com/${MOBILE_REPO}/releases/download/v${version}/Hisvex-${version}.apk`;
 
+type DesktopRelease = {
+  latest?: string;
+  windows?: string;
+  windowsPortable?: string;
+  macArm?: string;
+  macIntel?: string;
+  linuxAppImage?: string;
+  linuxDeb?: string;
+  releasesUrl?: string;
+};
+
 /**
- * Latest published version of a GitHub repo, or `fallback` if it cannot be
- * read (offline, rate limit, no release yet). Never throws and never leaves
- * the page without a download link — the fallback is always a real tag.
+ * Latest published versions, read from our own backend in one request.
+ *
+ * Never throws and never leaves the page without a download link: on any
+ * failure (offline, backend cold-starting, no release yet) the constants above
+ * stand in, and they always name a real published tag.
  */
-const useLatestRelease = (api: string, fallback: string) => {
-  const [version, setVersion] = useState(fallback);
+const useLatestVersions = () => {
+  const [state, setState] = useState<{
+    desktop: string;
+    mobile: string;
+    desktopAssets: DesktopRelease | null;
+  }>({ desktop: DESKTOP_FALLBACK, mobile: MOBILE_FALLBACK, desktopAssets: null });
+
   useEffect(() => {
     let cancelled = false;
-    fetch(api, { headers: { Accept: "application/vnd.github+json" } })
+    fetch(VERSION_API, { headers: { Accept: "application/json" } })
       .then((r) => (r.ok ? r.json() : null))
       .then((j) => {
-        const tag = String(j?.tag_name || "").replace(/^v/i, "");
-        if (tag && !cancelled) setVersion(tag);
+        if (cancelled || !j) return;
+        const data = j?.data ?? j;
+        const desktop: DesktopRelease = data?.desktop ?? {};
+        const mobileTag = String(data?.mobile?.latest || "").replace(/^v/i, "");
+        const desktopTag = String(desktop.latest || "").replace(/^v/i, "");
+        setState((prev) => ({
+          desktop: desktopTag || prev.desktop,
+          mobile: mobileTag || prev.mobile,
+          // Only trusted when the release actually named a version; a
+          // fallback answer carries no assets and must not blank the links.
+          desktopAssets: desktopTag ? desktop : null,
+        }));
       })
       .catch(() => {});
     return () => {
       cancelled = true;
     };
-  }, [api]);
-  return version;
+  }, []);
+
+  return state;
 };
 
-const getMacDmg = (v: string) => {
+const isAppleSilicon = () => {
   const u = navigator.userAgent;
-  if (u.includes("Apple Silicon") || u.includes("arm64"))
-    return desktopAsset(v, `Hisvex-${v}-arm64.dmg`);
-  return desktopAsset(v, `Hisvex-${v}-x64.dmg`);
+  return u.includes("Apple Silicon") || u.includes("arm64");
 };
 
-const getDesktopDownload = (v: string) => {
+// The URL the release actually published wins; the name-from-version guess is
+// only reached when the backend could not answer and the version came from the
+// constant above.
+const getMacDmg = (v: string, a: DesktopRelease | null) =>
+  isAppleSilicon()
+    ? a?.macArm ?? desktopAsset(v, `Hisvex-${v}-arm64.dmg`)
+    : a?.macIntel ?? desktopAsset(v, `Hisvex-${v}-x64.dmg`);
+
+const getWindowsExe = (v: string, a: DesktopRelease | null) =>
+  a?.windows ?? desktopAsset(v, `Hisvex-Setup-${v}.exe`);
+
+const getLinuxAppImage = (v: string, a: DesktopRelease | null) =>
+  a?.linuxAppImage ?? desktopAsset(v, `Hisvex-${v}.AppImage`);
+
+const getDesktopDownload = (v: string, a: DesktopRelease | null) => {
   const u = navigator.userAgent.toLowerCase();
   if (u.includes("mac"))
-    return { href: getMacDmg(v), label: "macOS DMG", file: `Hisvex-${v}.dmg` };
+    return { href: getMacDmg(v, a), label: "macOS DMG", file: `Hisvex-${v}.dmg` };
   if (u.includes("linux"))
     return {
-      href: desktopAsset(v, `Hisvex-${v}.AppImage`),
+      href: getLinuxAppImage(v, a),
       label: "Linux AppImage",
       file: `Hisvex-${v}.AppImage`,
     };
   return {
-    href: desktopAsset(v, `Hisvex-Setup-${v}.exe`),
+    href: getWindowsExe(v, a),
     label: "Windows",
     file: `Hisvex-Setup-${v}.exe`,
   };
@@ -372,8 +413,11 @@ function App() {
   const { pathname } = useLocation();
   // Resolved from the latest release so a new tag needs no edit here — the
   // previous hardcoded links silently kept serving 1.0.7 and 1.0.3.
-  const desktopVersion = useLatestRelease(DESKTOP_RELEASES_API, DESKTOP_FALLBACK);
-  const mobileVersion = useLatestRelease(MOBILE_RELEASES_API, MOBILE_FALLBACK);
+  const {
+    desktop: desktopVersion,
+    mobile: mobileVersion,
+    desktopAssets,
+  } = useLatestVersions();
 
   const [dur, setDur] = useState(1);
   const cleanupRefs = useRef<Array<() => void>>([]);
@@ -1849,7 +1893,7 @@ function App() {
               </div>
               <div className="platform-version">v{desktopVersion}</div>
               <a
-                href={desktopAsset(desktopVersion, `Hisvex-Setup-${desktopVersion}.exe`)}
+                href={getWindowsExe(desktopVersion, desktopAssets)}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn btn-gold platform-btn"
@@ -1889,7 +1933,7 @@ function App() {
               </div>
               <div className="platform-version">v{desktopVersion}</div>
               <a
-                href={getMacDmg(desktopVersion)}
+                href={getMacDmg(desktopVersion, desktopAssets)}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn btn-gold platform-btn"
@@ -1929,7 +1973,7 @@ function App() {
               </div>
               <div className="platform-version">v{desktopVersion}</div>
               <a
-                href={desktopAsset(desktopVersion, `Hisvex-${desktopVersion}.AppImage`)}
+                href={getLinuxAppImage(desktopVersion, desktopAssets)}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn btn-ghost platform-btn"
