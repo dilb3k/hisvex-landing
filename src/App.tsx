@@ -17,7 +17,7 @@ import { Link, useLocation } from "react-router-dom";
 const VERSION_API = "https://hisvex-api.onrender.com/api/meta/app-version";
 
 const DESKTOP_REPO = "dilb3k/hisvex-desktop";
-const DESKTOP_FALLBACK = "1.2.5";
+const DESKTOP_FALLBACK = "1.2.6";
 
 const desktopAsset = (version: string, file: string) =>
   `https://github.com/${DESKTOP_REPO}/releases/download/v${version}/${file}`;
