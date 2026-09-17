@@ -1994,8 +1994,8 @@ function App() {
                 onClick={() => setDur(m)}
               >
                 {m === 1 ? "1 oy" : m === 6 ? "6 oy" : "12 oy"}
-                {m === 6 && <span className="dur-disc">−6%</span>}
-                {m === 12 && <span className="dur-disc">−12%</span>}
+                {m === 6 && <span className="dur-disc">−10%</span>}
+                {m === 12 && <span className="dur-disc">−20%</span>}
               </button>
             ))}
           </div>
@@ -2070,12 +2070,12 @@ function App() {
               <div className="pname">Bor</div>
               <div className="pdesc">O'sib borayotgan do'konlar uchun.</div>
               <div className="pcost">
-                {dur === 1 ? "44 000" : dur === 6 ? "248 160" : "464 640"}{" "}
+                {dur === 1 ? "44 000" : dur === 6 ? "237 600" : "422 400"}{" "}
                 <small>so'm{dur > 1 ? "" : "/oy"}</small>
               </div>
               {dur > 1 && (
                 <div className="dur-save">
-                  ≈ {(dur === 6 ? 41360 : 38720).toLocaleString("uz-UZ")}{" "}
+                  ≈ {(dur === 6 ? 39600 : 35200).toLocaleString("uz-UZ")}{" "}
                   so'm/oy
                 </div>
               )}
@@ -2142,12 +2142,12 @@ function App() {
               <div className="pname">Pro</div>
               <div className="pdesc">To'liq imkoniyatlar, cheksiz miqyos.</div>
               <div className="pcost">
-                {dur === 1 ? "99 000" : dur === 6 ? "558 360" : "1 045 440"}{" "}
+                {dur === 1 ? "99 000" : dur === 6 ? "534 600" : "950 400"}{" "}
                 <small>so'm{dur > 1 ? "" : "/oy"}</small>
               </div>
               {dur > 1 && (
                 <div className="dur-save">
-                  ≈ {(dur === 6 ? 93060 : 87120).toLocaleString("uz-UZ")}{" "}
+                  ≈ {(dur === 6 ? 89100 : 79200).toLocaleString("uz-UZ")}{" "}
                   so'm/oy
                 </div>
               )}
