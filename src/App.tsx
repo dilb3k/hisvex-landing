@@ -628,9 +628,6 @@ function App() {
             <Link to="/faq">Savollar</Link>
           </nav>
           <div className="nav-cta">
-            <Link to="/privacy" className="btn btn-ghost">
-              Privacy
-            </Link>
             <a
               href="https://hisvex-web.vercel.app"
               target="_blank"
@@ -2129,7 +2126,7 @@ function App() {
                 </li>
               </ul>
               <a
-                href="https://t.me/dilbek7011"
+                href="https://t.me/hisvex_bot"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn btn-ghost"
@@ -2202,7 +2199,7 @@ function App() {
                 </li>
               </ul>
               <a
-                href="https://t.me/dilbek7011"
+                href="https://t.me/hisvex_bot"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn btn-gold"
@@ -2424,16 +2421,16 @@ function App() {
               </button>
               <div className="q-body" id="faq-a-4">
                 <p>
-                  Tarif va to'lov uchun Telegram orqali bog'laning:{" "}
+                  To'lov Telegram bot orqali amalga oshiriladi:{" "}
                   <a
-                    href="https://t.me/dilbek7011"
+                    href="https://t.me/hisvex_bot"
                     target="_blank"
                     rel="noopener noreferrer"
                     style={{ color: "var(--gold)" }}
                   >
-                    @dilbek7011
+                    @hisvex_bot
                   </a>
-                  .
+                  ni oching, tarifni tanlang va ko'rsatmalarga amal qiling.
                 </p>
               </div>
             </div>
