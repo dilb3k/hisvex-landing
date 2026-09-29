@@ -496,6 +496,8 @@ footer{border-top:1px solid var(--line);padding:64px 0 36px;margin-top:90px}
 @media(max-width:980px){
   .hero-grid,.showcase,.sec-shield{grid-template-columns:1fr}
   .hero-visual{min-height:auto;margin-top:20px}
+  .hb1{left:0px}
+  .hb2{right:0px}
   .bento{grid-template-columns:repeat(2,1fr)}
   .f-card.span3,.f-card.span2{grid-column:span 2}
   .steps{grid-template-columns:1fr 1fr}
@@ -536,7 +538,7 @@ footer{border-top:1px solid var(--line);padding:64px 0 36px;margin-top:90px}
   .chart-svg{height:70px}
   .tp-item{padding:6px 8px}
   .tp-bar-wrap{width:40px}
-  .platform-cards{grid-template-columns:repeat(3,1fr);gap:14px}
+  .platform-cards{grid-template-columns:1fr;gap:14px}
   .platform-card{padding:24px 16px}
   .platform-icon{width:48px;height:48px;border-radius:14px}
   .platform-icon svg{width:26px;height:26px}
@@ -558,14 +560,13 @@ footer{border-top:1px solid var(--line);padding:64px 0 36px;margin-top:90px}
   .steps{grid-template-columns:1fr}
   .foot-grid{grid-template-columns:1fr}
   .hero-stats{gap:16px}
-  .nav-cta .btn-ghost{display:none}
   .nav-inner{margin:6px 10px;padding:6px 12px}
   .brand{font-size:14px;gap:5px}
   .brand>span:first-child{height:34px!important;overflow:hidden}
   .brand img{height:68px!important}
   .brand>span:last-child span{font-size:16px!important}
-  .nav-cta .btn{padding:7px 12px;font-size:11px;gap:4px}
-  .burger{padding:5px}.burger span{width:18px}
+  .nav-cta .btn{padding:7px 12px;font-size:11px;gap:4px;min-height:40px;display:inline-flex;align-items:center}
+  .burger{padding:11px;min-width:40px;min-height:40px;justify-content:center}.burger span{width:18px}
   .burger-menu{position:absolute!important;top:60px!important;left:8px!important;right:8px!important;z-index:200}
   .hero{padding:100px 0 40px}
   .hero h1{margin:12px 0 10px;font-size:clamp(28px,8vw,40px)}
