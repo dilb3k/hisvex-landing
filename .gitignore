@@ -30,3 +30,9 @@ public/downloads/Hisvex-1.0.0.AppImage
 public/downloads/Hisvex-Setup-1.0.1.exe
 .vercel
 .env*
+
+admin-backup*.json
+*.dump
+*.backup
+
+.claude/settings.local.json
