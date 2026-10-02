@@ -30,9 +30,29 @@ public/downloads/Hisvex-1.0.0.AppImage
 public/downloads/Hisvex-Setup-1.0.1.exe
 .vercel
 .env*
+!.env.example
 
 admin-backup*.json
 *.dump
 *.backup
 
 .claude/settings.local.json
+
+# Local credentials and private key material
+credentials*.json
+service-account*.json
+*backup*.json
+*.pem
+*.key
+*.p12
+*.p8
+*.jks
+*.keystore
+*.mobileprovision
+
+# Generated audit and test reports
+/audit/
+/test-artifacts/
+test-results/
+playwright-report/
+coverage/
