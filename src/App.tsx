@@ -17,7 +17,7 @@ import { Link, useLocation } from "react-router-dom";
 const VERSION_API = "https://hisvex-api.onrender.com/api/meta/app-version";
 
 const DESKTOP_REPO = "dilb3k/hisvex-desktop";
-const DESKTOP_FALLBACK = "1.3.0";
+const DESKTOP_FALLBACK = "1.3.2";
 
 const desktopAsset = (version: string, file: string) =>
   `https://github.com/${DESKTOP_REPO}/releases/download/v${version}/${file}`;
@@ -28,7 +28,7 @@ const desktopAsset = (version: string, file: string) =>
 // private, so its release assets 404 for anyone who is not signed in. The APK
 // is therefore published to a dedicated public releases repo.
 const MOBILE_REPO = "dilb3k/hisvex-mobile";
-const MOBILE_FALLBACK = "1.1.4";
+const MOBILE_FALLBACK = "1.1.6";
 
 const mobileApk = (version: string) =>
   `https://github.com/${MOBILE_REPO}/releases/download/v${version}/Hisvex-${version}.apk`;
