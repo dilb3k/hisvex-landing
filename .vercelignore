@@ -10,3 +10,28 @@ dist/downloads/
 # the same public/downloads/ copy vite copies verbatim on build, which is
 # what pushed the upload past the 100MB single-file limit in the first place.
 dist/
+
+# Keep credentials and generated local files out of source deployments.
+.env*
+credentials*.json
+service-account*.json
+*backup*.json
+*.dump
+*.backup
+*.pem
+*.key
+*.p12
+*.p8
+*.jks
+*.keystore
+*.mobileprovision
+.claude/
+.vercel/
+node_modules/
+*.log
+*.tsbuildinfo
+coverage/
+/audit/
+/test-artifacts/
+test-results/
+playwright-report/
