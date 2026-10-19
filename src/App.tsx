@@ -14,7 +14,7 @@ import { Link, useLocation } from "react-router-dom";
 // read as an older version for a real visitor while looking correct to whoever
 // tested it. The backend does the lookup once every ten minutes from one IP
 // and hands back both the version and the actual asset URLs.
-const VERSION_API = "https://hisvex-api.onrender.com/api/meta/app-version";
+const VERSION_API = "https://hisvex-api-production.up.railway.app/api/meta/app-version";
 
 const DESKTOP_REPO = "dilb3k/hisvex-desktop";
 const DESKTOP_FALLBACK = "1.3.6";
